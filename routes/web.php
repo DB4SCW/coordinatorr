@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActivationController;
+use App\Http\Controllers\CallsignController;
 use App\Http\Controllers\PlannedActivationController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +22,5 @@ Route::get('/end_activation/{activation:id}', [ActivationController::class, 'end
 Route::get('/planned_activations', [PlannedActivationController::class, 'index'])->name('planned_activations');
 Route::post('/add_planned_activation', [PlannedActivationController::class, 'add'])->name('add_planned_activation');
 Route::get('/planned_activation/{plannedactivation:id}/delete', [PlannedActivationController::class, 'remote'])->name('delete_planned_activation');
+
+Route::get('/status/{callsign:call}', [CallsignController::class, 'status'])->name('getstatus');
