@@ -27,7 +27,7 @@
                     <input name="end" class="form-control" type="datetime-local">
                 </div>
                 <div class="text-center">
-                    <input type="submit" class="btn btn-primary" value="Start Activation">
+                    <input type="submit" class="btn btn-primary" value="Plan Activation">
                 </div>
             </form>
         </div>
@@ -61,6 +61,10 @@
                 
             </div>
             @endforeach
+        </div>
+        @else
+        <div style="margin-bottom: 80px;">
+        <!-- Dummy Diff als Abstandshalter für Mobile Landscape -->
         </div>
         @endif
     </x-slot>

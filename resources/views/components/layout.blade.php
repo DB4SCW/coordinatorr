@@ -101,6 +101,9 @@
             <a class="navbar-brand" href="/">Coordinatorr</a>
             
             <div class="navbar-element">
+                @if(auth()->check())
+                <a class="nav-link navbar-link" href="/logout">Logout</a>
+                @endif
                 <a class="nav-link navbar-link" href="/planned_activations">Planned Activations</a>
             </div>
         </nav>
