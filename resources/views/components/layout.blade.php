@@ -102,6 +102,7 @@
             
             <div class="navbar-element">
                 @if(auth()->check())
+                <a class="nav-link navbar-link" href="/admin">Adminpanel</a>
                 <a class="nav-link navbar-link" href="/logout">Logout</a>
                 @endif
                 <a class="nav-link navbar-link" href="/planned_activations">Planned Activations</a>

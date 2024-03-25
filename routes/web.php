@@ -19,22 +19,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//Main Page
 Route::get('/', [ActivationController::class, 'index'])->name('home');
+
+//Activation handling
 Route::post('/add_activation', [ActivationController::class, 'add'])->name('add');
 Route::get('/end_activation/{activation:id}', [ActivationController::class, 'end'])->name('end');
+
+//View planned activations
 Route::get('/planned_activations', [PlannedActivationController::class, 'index'])->name('planned_activations');
+
+//Planned activation handling
 Route::post('/add_planned_activation', [PlannedActivationController::class, 'add'])->name('add_planned_activation');
 Route::get('/planned_activation/{plannedactivation:id}/delete', [PlannedActivationController::class, 'remote'])->name('delete_planned_activation');
 
+//QRZ IFrame Integration
 Route::get('/status/{callsign:call}', [CallsignController::class, 'status'])->name('getstatus');
 
-
-
-
-//Only guests can login
-Route::middleware('guest')->group(function () {
-    Route::get('/admin/' . urlencode(env('ADMIN_PANEL_SECRET', 'simsalabim')), [LoginController::class, 'login'])->name('login');
-});
+//Login Route
+Route::get('/admin/' . urlencode(env('ADMIN_PANEL_SECRET', 'simsalabim')), [LoginController::class, 'login'])->name('login');
 
 //Routes for logged in users
 Route::middleware('auth')->group(function () {
