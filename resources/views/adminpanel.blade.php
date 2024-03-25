@@ -42,6 +42,11 @@
                             <td>{{ $activator->call }}</td>
                             <td style="text-align: center;">
                                 <a href="/activator/{{ $activator->call }}/remove"><button class="btn btn-danger">Remove Activator</button></a>
+                                @if($activator->locked)
+                                <a href="/activator/{{ $activator->call }}/lock"><button class="btn btn-success">Unlock Activator</button></a>
+                                @else
+                                <a href="/activator/{{ $activator->call }}/lock"><button class="btn btn-warning">Lock Activator</button></a>
+                                @endif
                             </td>
                         </tr>
                         @endforeach
@@ -65,6 +70,11 @@
                             <td>{{ $eventcall->call }}</td>
                             <td style="text-align: center;">
                                 <a href="/callsign/{{ $eventcall->call }}/remove"><button class="btn btn-danger">Remove Eventcallsign</button></a>
+                                @if($eventcall->hidden)
+                                <a href="/callsign/{{ $eventcall->call }}/hide"><button class="btn btn-success">Reveal Eventcallsign</button></a>
+                                @else
+                                <a href="/callsign/{{ $eventcall->call }}/hide"><button class="btn btn-warning">Hide Eventcallsign</button></a>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

@@ -58,4 +58,15 @@ class ActivatorController extends Controller
         //return back
         return redirect()->route('adminpanel')->with('success', 'Activator successfully created.');
     }
+
+    public function lock(Activator $activator)
+    {
+
+        //switch lock for activator
+        $activator->locked = !$activator->locked;
+        $activator->save();
+
+        //return back
+        return redirect()->route('adminpanel')->with('success', 'Activator lock switched successfully.');
+    }
 }

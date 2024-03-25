@@ -80,4 +80,15 @@ class CallsignController extends Controller
         //return back
         return redirect()->route('adminpanel')->with('success', 'Callsign successfully created.');
     }
+
+    public function hide(Callsign $callsign)
+    {
+
+        //switch lock for activator
+        $callsign->hidden = !$callsign->hidden;
+        $callsign->save();
+
+        //return back
+        return redirect()->route('adminpanel')->with('success', 'Callsign hiding flag switched successfully.');
+    }
 }

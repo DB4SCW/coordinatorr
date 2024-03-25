@@ -51,9 +51,11 @@ Route::middleware('auth')->group(function () {
     //Activator handling
     Route::post('/admin/add_activator', [ActivatorController::class, 'create']);
     Route::get('/activator/{activator:call}/remove', [ActivatorController::class, 'destroy']);
+    Route::get('/activator/{activator:call}/lock', [ActivatorController::class, 'lock']);
     
     //Callsign handling
     Route::post('/admin/add_callsign', [CallsignController::class, 'create']);
     Route::get('/callsign/{callsign:call}/remove', [CallsignController::class, 'destroy']);
+    Route::get('/callsign/{callsign:call}/hide', [CallsignController::class, 'hide']);
 
 });

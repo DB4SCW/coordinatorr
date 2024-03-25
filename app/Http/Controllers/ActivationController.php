@@ -25,6 +25,7 @@ class ActivationController extends Controller
         //preprocess inputs
         $inputattributes = request()->all();
         $inputattributes['activator_callsign'] = strtoupper($inputattributes['activator_callsign']);
+        $inputattributes['activator_callsign'] = str_replace(' ', '', $inputattributes['activator_callsign']);
         
         //Input validieren
         $validator = \Illuminate\Support\Facades\Validator::make($inputattributes, [
