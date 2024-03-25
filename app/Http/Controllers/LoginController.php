@@ -10,12 +10,16 @@ class LoginController extends Controller
 {
     public function login()
     {
-        //if user reaches this route, login admin user
-        $user = User::find(1);
-        Auth::login($user);
-        
-        //regenerate session
-        session()->regenerate();
+        //Login wenn noch nicht geschehen
+        if(!auth()->check())
+        {
+            //if user reaches this route, login admin user
+            $user = User::find(1);
+            Auth::login($user);
+
+            //regenerate session
+            session()->regenerate();
+        }
         
         //redirect to admin panel
         return redirect('/admin')->with('success', 'Successfull login to admin panel');
