@@ -37,7 +37,7 @@ Route::get('/planned_activation/{plannedactivation:id}/delete', [PlannedActivati
 Route::get('/status/{callsign:call}', [CallsignController::class, 'status'])->name('getstatus');
 
 //Login Route
-Route::get('/admin/' . urlencode(env('ADMIN_PANEL_SECRET', 'simsalabim')), [LoginController::class, 'login'])->name('login');
+Route::get('/adminkey/' . urlencode(env('ADMIN_PANEL_SECRET', 'simsalabim')), [LoginController::class, 'login'])->name('login');
 
 //Routes for logged in users
 Route::middleware('auth')->group(function () {
