@@ -90,8 +90,10 @@ class ActivationController extends Controller
         $activation->start = \Carbon\Carbon::now();
         $activation->save();
 
-        $future_reservations = $callsign->plannedactivations()->orderBy('start')->get()->where('start', '<=', \Carbon\Carbon::now()->addHours(4));
+        //check if there are other activations up to 4 hours in the future where this activator is not the reserving activator
+        $future_reservations = $callsign->plannedactivations()->where('activator_id', '!=', $activator->id)->orderBy('start')->get()->where('start', '<=', \Carbon\Carbon::now()->addHours(env("COORDINATORR_CHECK_RESERVATIONS_IN_ADVANCE_HOURS", 4)));
 
+        //decide which on-screen-message to display
         if($future_reservations->count() > 0)
         {
             //redirect back to list
