@@ -97,7 +97,8 @@ class ActivationController extends Controller
         if($future_reservations->count() > 0)
         {
             //redirect back to list
-            return redirect()->route('home')->with('warning', 'Another activation starts in ' . $future_reservations->first()->start->diff(\Carbon\Carbon::now())->format('%H:%I:%S') . '. Please check!');
+            $nextactivation = $future_reservations->first();
+            return redirect()->route('home')->with('warning', 'Another activation by ' . $nextactivation->activator->call . ' starts in ' . $nextactivation->start->diff(\Carbon\Carbon::now())->format('%H:%I:%S') . '. Please check!');
         }else
         {
             //redirect back to list
