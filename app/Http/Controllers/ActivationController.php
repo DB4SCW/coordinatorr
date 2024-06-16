@@ -91,14 +91,14 @@ class ActivationController extends Controller
         $activation->save();
 
         //check if there are other activations up to 4 hours in the future where this activator is not the reserving activator
-        $future_reservations = $callsign->plannedactivations()->where('activator_id', '!=', $activator->id)->orderBy('start')->get()->where('start', '<=', \Carbon\Carbon::now()->addHours(env("COORDINATORR_CHECK_RESERVATIONS_IN_ADVANCE_HOURS", 4)));
+        $future_reservations = $callsign->plannedactivations()->where('activator_id', '!=', $activator->id)->where('end', '>=', \Carbon\Carbon::now())->orderBy('start')->get()->where('start', '<=', \Carbon\Carbon::now()->addHours(env("COORDINATORR_CHECK_RESERVATIONS_IN_ADVANCE_HOURS", 4)));
 
         //decide which on-screen-message to display
         if($future_reservations->count() > 0)
         {
             //redirect back to list
             $nextactivation = $future_reservations->first();
-            return redirect()->route('home')->with('warning', 'Another activation by ' . $nextactivation->activator->call . ' starts in ' . $nextactivation->start->diff(\Carbon\Carbon::now())->format('%H:%I:%S') . '. Please check!');
+            return redirect()->route('home')->with('warning', 'Another activation by ' . $nextactivation->activator->call . ' starts in ' . $nextactivation->start->diff(\Carbon\Carbon::now())->format('%H:%I') . ' h. Please check!');
         }else
         {
             //redirect back to list
