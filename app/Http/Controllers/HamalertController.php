@@ -13,7 +13,7 @@ class HamalertController extends Controller
         $data = request()->json()->all();
 
         //get callsign from spot
-        $spot_callsign = swolf_getcallsignwithoutadditionalinfo($data['fullCallsign']);
+        $spot_callsign = swolf_getcallsignwithoutadditionalinfo($data['callsign']);
 
         //get callsign from database
         $callsign = Callsign::where('call', $spot_callsign)->first();
