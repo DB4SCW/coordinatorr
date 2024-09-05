@@ -14,7 +14,13 @@ class CallsignController extends Controller
 
         if($current != null)
         {
-            return view('status', ['message' => $callsign->call . " is currently on the air. Check the clusters!"]);
+            if($current->hamalert_spot_datetime != null)
+            {
+                return view('status', ['message' => $callsign->call . " is QRV @ " . $current->hamalert_frequency . " MHz " . $current->hamalert_mode]);
+            }else
+            {
+                return view('status', ['message' => $callsign->call . " is currently on the air. Check the clusters!"]);
+            }            
         }
 
         //check if there are planned activations
