@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::table('activations', function (Blueprint $table) {
             $table->string('hamalert_spotter', 20)->nullable();
-            $table->decimal('hamalert_frequency', 12, 6, true);
+            $table->decimal('hamalert_frequency', 12, 6, true)->nullable();
             $table->string('hamalert_mode', 20)->nullable();
-            $table->dateTimeTz('hamalert_spot_datetime');
+            $table->dateTimeTz('hamalert_spot_datetime')->nullable();
         });
     }
 
