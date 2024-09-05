@@ -44,6 +44,7 @@ class HamalertController extends Controller
         $current_activation->hamalert_frequency = $frequency;
         $current_activation->hamalert_mode = $mode;
         $current_activation->hamalert_spot_datetime = $time;
+        $current_activation->hamalert_spot_count = ($current_activation->hamalert_spot_count ?? 0) + 1;
         $current_activation->save();
 
         //return positive resopnse
