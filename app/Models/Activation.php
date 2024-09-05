@@ -11,7 +11,7 @@ class Activation extends Model
 {
     use HasFactory;
 
-    protected $casts = ['start' => 'datetime', 'end' => 'datetime'];
+    protected $casts = ['start' => 'datetime', 'end' => 'datetime', 'hamalert_spot_datetime' => 'datetime'];
 
     public function callsign() : HasOne
     {

@@ -6,6 +6,7 @@ use App\Http\Controllers\CallsignController;
 use App\Http\Controllers\PlannedActivationController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminpanelController;
+use App\Http\Controllers\HamalertController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,3 +60,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/callsign/{callsign:call}/hide', [CallsignController::class, 'hide']);
 
 });
+
+//Hamalert integration
+Route::post('/hamalertreceiver', [HamalertController::class, 'receive'])->name('hamalertreceiver')->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
