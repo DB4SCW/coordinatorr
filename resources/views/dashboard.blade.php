@@ -43,6 +43,9 @@
                             <td colspan="2" style="text-align: center;">
                                 Since:<br>
                                 {{ $activation->start->setTimezone('Europe/Berlin') }} local time <br> {{ $activation->start->setTimezone('UTC') }} UTC
+                                @if($activation->hamalert_spot_datetime != null)
+                                <br>Last spot: {{ $activation->start->setTimezone('UTC') }} @ {{ $activation->hamalert_frequency }} MHz {{ $activation->hamalert_mode }}
+                                @endif
                             </td>
                         </tr>
                     </tbody>
