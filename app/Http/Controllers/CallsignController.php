@@ -12,8 +12,10 @@ class CallsignController extends Controller
         //check if callsign is currently active
         $current = $callsign->activations()->where('end', null)->first();
 
+        //display current information
         if($current != null)
         {
+            //display hamalert spot data if available
             if($current->hamalert_spot_datetime != null)
             {
                 return view('status', ['message' => $callsign->call . " is QRV @ " . $current->hamalert_frequency . " MHz " . $current->hamalert_mode]);
@@ -26,6 +28,7 @@ class CallsignController extends Controller
         //check if there are planned activations
         $planned = $callsign->plannedactivations()->orderBy('start', 'desc')->first();
 
+        //display planned activations
         if($planned != null)
         {
             return view('status', ['message' => "Next activation: " . $planned->start->setTimezone('UTC') . " UTC"]);
