@@ -26,6 +26,24 @@
                 </div>
             </form>
         </div>
+        <h3 class="text-center mb-4" style="margin-top: 30px;">Coordinatorr mode:</h3>
+        <div style="margin-bottom: 80px;">
+            <div class="container mt-5">
+                <form action="/admin/switch_mode" method="post">
+                    @csrf
+                    <div class="form-group">
+                        <select class="form-control" name="mode">
+                            @foreach ($modes as $mode)
+                            <option value="{{ $mode->option }}" {{ env('COORDINATORR_MODE', 'SINGLEOP') == $mode->option ? 'selected' : '' }}>{{ $mode->option }} -> {{ $mode->description }}</option>    
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="text-center">
+                        <input type="submit" class="btn btn-primary" value="Add event callsign">
+                    </div>
+                </form>
+            </div>
+        </div>
         <h3 class="text-center mb-4" style="margin-top: 30px;">Activators:</h3>
         <div style="margin-bottom: 80px;">
             <div class="container mt-5 section" style="background-color: rgba(255, 255, 255, 0.5);">

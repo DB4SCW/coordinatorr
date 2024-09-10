@@ -26,6 +26,39 @@
                     <label for="end">End (UTC):</label>
                     <input name="end" class="form-control" type="datetime-local">
                 </div>
+                @if($appmode == 'SINGLEOP')
+                <input type="hidden" id="band_id" name="band_id" value=""/>
+                <input type="hidden" id="mode_id" name="mode_id" value=""/>
+                @endif
+                @if($appmode == 'MULTIOPBAND')
+                <div class="form-group">
+                    <label for="band_id">Band:</label>
+                    <select class="form-control" id="band_id" name="band_id">
+                        @foreach($bands as $band)
+                        <option value="{{$band->id}}" {{ $band->start == 14 ? 'selected' : '' }}>{{$band->band}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <input type="hidden" id="mode_id" name="mode_id" value=""/>
+                @endif
+                @if($appmode == 'MULTIOPMODE')
+                <div class="form-group">
+                    <label for="band_id">Band:</label>
+                    <select class="form-control" id="band_id" name="band_id">
+                        @foreach($bands as $band)
+                        <option value="{{$band->id}}" {{ $band->start == 14 ? 'selected' : '' }}>{{$band->band}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="mode_id">Mode:</label>
+                    <select class="form-control" id="mode_id" name="mode_id">
+                        @foreach($modes as $mode)
+                        <option value="{{$mode->id}}" {{ $mode->mode == 'VOICE' ? 'selected' : '' }}>{{$mode->mode}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                @endif
                 <div class="text-center">
                     <input type="submit" class="btn btn-primary" value="Plan Activation">
                 </div>
@@ -52,6 +85,16 @@
                             <td>{{ $activation->start->setTimezone('UTC') }} UTC</td>
                             <td>{{ $activation->end->setTimezone('UTC') }} UTC</td>
                         </tr>
+                        @if($appmode != 'SINGLEOP')
+                        <tr>
+                            <td colspan="2" style="text-align: center;">
+                                Band: {{ $activation->band->band }}<br>
+                                @if($appmode == 'MULTIOPMODE')
+                                Mode: {{ $activation->mode->mode ?? 'unknown' }}
+                                @endif
+                            </td>
+                        </tr>
+                        @endif
                     </tbody>
                 </table>
                 
