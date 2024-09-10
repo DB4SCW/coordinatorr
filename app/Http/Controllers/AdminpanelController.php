@@ -23,7 +23,7 @@ class AdminpanelController extends Controller
     {
         //validate input
         $validator = \Illuminate\Support\Facades\Validator::make(request()->all(), [
-            'mode' => 'required|exists:modes,option'
+            'mode' => 'required|exists:appmodes,option'
         ], 
         [
             'mode.exists' => 'This mode does not exist.'
