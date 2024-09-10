@@ -10,11 +10,19 @@ class CallsignController extends Controller
     public function status(Callsign $callsign)
     {
         //check if callsign is currently active
-        $current = $callsign->activations()->where('end', null)->first();
+        $current_activations = $callsign->activations()->where('end', null);
 
         //display current information
-        if($current != null)
+        if($current_activations->count() > 0)
         {
+            //sort by hamalert data, get hamalert enabled activations first
+            $current_activations_sorted = $current_activations->get()->sortByDesc(function ($item) {
+                return !is_null($item->hamalert_spot_datetime);
+            });
+            
+            //get first activation
+            $current = $current_activations_sorted->first();
+
             //display hamalert spot data if available
             if($current->hamalert_spot_datetime != null)
             {
