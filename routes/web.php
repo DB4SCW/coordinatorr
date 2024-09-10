@@ -66,4 +66,3 @@ Route::middleware('auth')->group(function () {
 
 //Hamalert integration
 Route::post('/hamalertreceiver', [HamalertController::class, 'receive'])->name('hamalertreceiver')->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
-Route::get('/hamalertreceiver', [HamalertController::class, 'receive'])->name('hamalertreceiver')->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
