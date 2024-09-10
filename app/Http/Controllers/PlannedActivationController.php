@@ -44,7 +44,9 @@ class PlannedActivationController extends Controller
             'eventcallsignid' => 'exists:callsigns,id',
             'activator_callsign' => 'required|exists:activators,call',
             'start' => 'required|date|after:now',
-            'end' => 'required|date|after:start'
+            'end' => 'required|date|after:start', 
+            'band_id' => 'nullable',
+            'mode_id' => 'nullable'
         ];
 
         //Define basic error messages for validation
@@ -99,11 +101,11 @@ class PlannedActivationController extends Controller
         }
 
         //get concurrent planned activations
-        $concurrent_planned_activations = $callsign->plannedactivations->where('end', '>=', $start)->where('start', '<=', $end);
+        $concurrent_planned_activations = $callsign->plannedactivations()->where('end', '>=', $start)->where('start', '<=', $end);
 
         //add constrictions based on appmode
         $concurrent_planned_activations = db4scw_add_mode_constrictions($concurrent_planned_activations, $appmode, $bandid, $modeid);
-
+        
         //abort if there is another concurrent activation
         if($concurrent_planned_activations->count() > 0)
         {
