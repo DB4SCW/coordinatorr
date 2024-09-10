@@ -10,7 +10,7 @@ class CallsignController extends Controller
     public function status(Callsign $callsign)
     {
         //check if callsign is currently active
-        $current_activations = $callsign->activations()->where('end', null);
+        $current_activations = $callsign->activations()->where('end', null)->orderBy('start', 'desc');
 
         //display current information
         if($current_activations->count() > 0)
