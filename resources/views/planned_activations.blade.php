@@ -88,9 +88,9 @@
                         @if($appmode != 'SINGLEOP')
                         <tr>
                             <td colspan="2" style="text-align: center;">
-                                Band: {{ $activation->band->band }}<br>
+                                Band: {{ $activation->band == null ? 'unknown' : $activation->band->band }}<br>
                                 @if($appmode == 'MULTIOPMODE')
-                                Mode: {{ $activation->mode->mode ?? 'unknown' }}
+                                Mode: {{ $activation->mode == null ? 'unknown' : $activation->mode->mode }}
                                 @endif
                             </td>
                         </tr>

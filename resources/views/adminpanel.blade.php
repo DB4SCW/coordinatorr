@@ -32,6 +32,7 @@
                 <form action="/admin/switch_mode" method="post">
                     @csrf
                     <div class="form-group">
+                        <label for="mode" style="color:red;">DANGER: Changing this will delete all current activations and upcoming planned activations!</label>
                         <select class="form-control" name="mode">
                             @foreach ($modes as $mode)
                             <option value="{{ $mode->option }}" {{ env('COORDINATORR_MODE', 'SINGLEOP') == $mode->option ? 'selected' : '' }}>{{ $mode->option }} -> {{ $mode->description }}</option>    

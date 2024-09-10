@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activation;
 use App\Models\Activator;
 use App\Models\Callsign;
 use App\Models\Appmode;
+use App\Models\PlannedActivation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
@@ -62,6 +64,18 @@ class AdminpanelController extends Controller
         } catch (\Throwable $th) {
             return redirect()->route('adminpanel')->with('danger', 'Failed to change coordinatorr mode.');
         }
+
+        //purge all current activations
+        $current_activations = Activation::where('end', null)->get();
+        $current_activations->each(function ($activation) {
+            $activation->delete();
+        });
+
+        //purge all upcoming planned activations
+        $upcoming_planned_activations = PlannedActivation::all()->where('end', '>', \Carbon\Carbon::now());
+        $upcoming_planned_activations->each(function ($planned_activation) {
+            $planned_activation->delete();
+        });
         
         //redirect back to adminpanel
         return redirect()->route('adminpanel')->with('success', 'Successfully changed coordinatorr mode.');
