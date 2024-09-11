@@ -71,7 +71,7 @@ class CallsignController extends Controller
         $inputattributes['event_callsign'] = strtoupper($inputattributes['event_callsign']);
         $inputattributes['event_callsign'] = str_replace(' ', '', $inputattributes['event_callsign']);
         
-        //Input validieren
+        //validate input
         $validator = \Illuminate\Support\Facades\Validator::make($inputattributes, [
             'event_callsign' => 'required|unique:callsigns,call|max:10'
         ], 
@@ -81,12 +81,12 @@ class CallsignController extends Controller
             'event_callsign.max' => 'Event callsign may not be longer than 10 characters.'
         ]);
 
-        //Validierungsfail behandeln
+        //handle fail of validation
         if ($validator->fails()) {
             return redirect()->route('adminpanel')->with('danger', skd_validatorerrors($validator))->withInput();
         }
 
-        //validierte Felder abholen
+        //get validated fields
         $attributes = $validator->validated();
 
         //create new activator

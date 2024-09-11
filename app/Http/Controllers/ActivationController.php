@@ -69,10 +69,10 @@ class ActivationController extends Controller
             $errormessages['mode_id.exists'] = 'This mode does not exist.';
         }
 
-        //Input validieren
+        //validate input
         $validator = \Illuminate\Support\Facades\Validator::make($inputattributes, $validationrules, $errormessages);
 
-        //Validierungsfail behandeln
+        //handle fail of validation
         if ($validator->fails()) {
             return redirect()->route('home')->with('danger', skd_validatorerrors($validator));
         }
