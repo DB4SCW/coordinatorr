@@ -34,7 +34,7 @@ function db4scw_add_mode_constrictions($input, $appmode, $bandid = null, $modeid
     return $input;
 }
 
-function db4scw_assure_appmode_in_env()
+function db4scw_assure_appmode_in_env() : void
 {
     //define env key
     $key = "COORDINATORR_MODE";
@@ -50,6 +50,7 @@ function db4scw_assure_appmode_in_env()
     // If key exists, replace it. Otherwise, add the new key-value pair.
     if ($keyPosition !== false) {
         //do nothing
+        return;
     } else {
         $envcontent .= "\n{$key}={$value}";
     }
