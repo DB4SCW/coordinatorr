@@ -32,7 +32,7 @@ Route::get('/planned_activations', [PlannedActivationController::class, 'index']
 
 //Planned activation handling
 Route::post('/add_planned_activation', [PlannedActivationController::class, 'add'])->name('add_planned_activation');
-Route::get('/planned_activation/{plannedactivation:id}/delete', [PlannedActivationController::class, 'remote'])->name('delete_planned_activation');
+Route::get('/planned_activation/{plannedactivation:id}/delete', [PlannedActivationController::class, 'remove'])->name('delete_planned_activation');
 
 //QRZ IFrame Integration
 Route::get('/status/{callsign:call}', [CallsignController::class, 'status'])->name('getstatus');
@@ -58,6 +58,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/add_callsign', [CallsignController::class, 'create']);
     Route::get('/callsign/{callsign:call}/remove', [CallsignController::class, 'destroy']);
     Route::get('/callsign/{callsign:call}/hide', [CallsignController::class, 'hide']);
+
+    //Mode handling
+    Route::post('/admin/switch_mode', [AdminpanelController::class, 'switchmode']);
 
 });
 

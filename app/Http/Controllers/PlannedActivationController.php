@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\PlannedActivation;
 use App\Models\Callsign;
 use App\Models\Activator;
+use App\Models\Appmode;
+use App\Models\Band;
+use App\Models\Mode;
 
 class PlannedActivationController extends Controller
 {
@@ -14,25 +17,40 @@ class PlannedActivationController extends Controller
         //get infos from database
         $callsigns = Callsign::where('hidden', false)->get();
         $planned_activations = PlannedActivation::orderBy('start')->with('callsign', 'activator')->get()->where('end', '>', \Carbon\Carbon::now());
+        $appmode = env('COORDINATORR_MODE', 'SINGLEOP');
+        $bands = Band::all();
+        $modes = Mode::all();
 
         //show list
-        return view('planned_activations', ['callsigns' => $callsigns, 'planned_activations' => $planned_activations]);
+        return view('planned_activations', ['callsigns' => $callsigns, 'planned_activations' => $planned_activations, 'appmode' => $appmode, 'bands' => $bands, 'modes' => $modes]);
     }
 
     public function add()
     {
+        //get appmode
+        $appmode = env('COORDINATORR_MODE', 'SINGLEOP');
+
+        //check if Appmode is valid
+        if(Appmode::where('option', $appmode)->count() < 1) {
+            return redirect()->route('home')->with('danger', 'Coordinator mode is invalid.');
+        }
+        
         //preprocess inputs
         $inputattributes = request()->all();
         $inputattributes['activator_callsign'] = strtoupper($inputattributes['activator_callsign']);
-        
-        //Input validieren
-        $validator = \Illuminate\Support\Facades\Validator::make($inputattributes, [
+
+        //define basic validation rules
+        $validationrules = [
             'eventcallsignid' => 'exists:callsigns,id',
             'activator_callsign' => 'required|exists:activators,call',
             'start' => 'required|date|after:now',
-            'end' => 'required|date|after:start'
-        ], 
-        [
+            'end' => 'required|date|after:start', 
+            'band_id' => 'nullable',
+            'mode_id' => 'nullable'
+        ];
+
+        //Define basic error messages for validation
+        $errormessages = [
             'eventcallsignid.exists' => 'This callsign does not exist.',
             'activator_callsign.exists' => 'This activator callsign is not recognised.',
             'activator_callsign.required' => 'The activator callsign must be entered.',
@@ -42,14 +60,30 @@ class PlannedActivationController extends Controller
             'end.required' => 'End Date and Time has to be filled.',
             'end.date' => 'End Date has to be a valid date.',
             'end.after' => 'End Date has to be after the start date.'
-        ]);
+        ];
 
-        //Validierungsfail behandeln
+        //add new validation rules and error messages depending on app mode
+        if($appmode == "MULTIOPBAND" or $appmode == "MULTIOPMODE")
+        {
+            $validationrules['band_id'] = 'exists:bands,id';
+            $errormessages['band_id.exists'] = 'This band does not exist.';
+        }
+
+        if($appmode == "MULTIOPMODE")
+        {
+            $validationrules['mode_id'] = 'exists:modes,id';
+            $errormessages['mode_id.exists'] = 'This mode does not exist.';
+        }
+        
+        //validate input
+        $validator = \Illuminate\Support\Facades\Validator::make($inputattributes, $validationrules, $errormessages);
+
+        //handle fail of validation
         if ($validator->fails()) {
             return redirect()->route('planned_activations')->with('danger', skd_validatorerrors($validator))->withInput();
         }
 
-        //validierte Felder abholen
+        //get validated fields
         $attributes = $validator->validated();
 
         //load and extract infos
@@ -57,6 +91,8 @@ class PlannedActivationController extends Controller
         $callsign = Callsign::find($attributes['eventcallsignid']);
         $start = \Carbon\Carbon::parse($attributes['start']);
         $end = \Carbon\Carbon::parse($attributes['end']);
+        $bandid = $attributes['band_id'];
+        $modeid = $attributes['mode_id'];
 
         //check if activator is locked or callsign is hidden
         if($activator->locked or $callsign->hidden)
@@ -65,7 +101,13 @@ class PlannedActivationController extends Controller
         }
 
         //get concurrent planned activations
-        if($callsign->plannedactivations->where('end', '>=', $start)->where('start', '<=', $end)->count() > 0)
+        $concurrent_planned_activations = $callsign->plannedactivations()->where('end', '>=', $start)->where('start', '<=', $end);
+
+        //add constrictions based on appmode
+        $concurrent_planned_activations = db4scw_add_mode_constrictions($concurrent_planned_activations, $appmode, $bandid, $modeid);
+        
+        //abort if there is another concurrent activation
+        if($concurrent_planned_activations->count() > 0)
         {
             return redirect()->route('planned_activations')->with('danger', 'There is already another activation of this call planned during this time.')->withInput();
         }
@@ -76,6 +118,8 @@ class PlannedActivationController extends Controller
         $activation->activator_id = $activator->id;
         $activation->start = $start;
         $activation->end = $end;
+        $activation->band_id = $bandid;
+        $activation->mode_id = $modeid;
         $activation->save();
 
         //redirect back to list
@@ -83,7 +127,7 @@ class PlannedActivationController extends Controller
 
     }
 
-    public function remote(PlannedActivation $plannedactivation)
+    public function remove(PlannedActivation $plannedactivation)
     {
         //delete planned activation
         $plannedactivation->delete();
