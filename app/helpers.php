@@ -48,7 +48,8 @@ function db4scw_assure_appmode_in_env() : void
     $keyPosition = strpos($envcontent, "{$key}=");
 
     // If key exists, replace it. Otherwise, add the new key-value pair.
-    if ($keyPosition !== false) {
+    if ($keyPosition !== false) 
+    {
         //do nothing
         return;
     } else {
@@ -56,9 +57,11 @@ function db4scw_assure_appmode_in_env() : void
     }
 
     //write new env file
-    try {
+    try 
+    {
         file_put_contents($envFile, $envcontent);
-    } catch (\Throwable $th) {
+    } catch (\Throwable $th) 
+    {
         //nothing we can do here if that does not work...
     }
 
