@@ -33,6 +33,7 @@ return new class extends Migration
         Band::create(['band' => '15m', 'start' => '21', 'end' => '21.45']);
         Band::create(['band' => '12m', 'start' => '24.89', 'end' => '24.99']);
         Band::create(['band' => '10m', 'start' => '28', 'end' => '30']);
+        Band::create(['band' => '8m', 'start' => '40.660', 'end' => '40.690']);
         Band::create(['band' => '6m', 'start' => '50', 'end' => '54']);
         Band::create(['band' => '4m', 'start' => '70', 'end' => '71']);
         Band::create(['band' => '2m', 'start' => '144', 'end' => '148']);
@@ -47,7 +48,9 @@ return new class extends Migration
         Band::create(['band' => '1.25cm', 'start' => '24000', 'end' => '24250']);
         Band::create(['band' => '6mm', 'start' => '47000', 'end' => '47200']);
         Band::create(['band' => '4mm', 'start' => '77500', 'end' => '84000']);
-
+        Band::create(['band' => '2.5mm', 'start' => '122250', 'end' => '123000']);
+        Band::create(['band' => '2mm', 'start' => '142000', 'end' => '84000']);
+        Band::create(['band' => '1mm', 'start' => '241000', 'end' => '250000']);
     }
 
     /**
