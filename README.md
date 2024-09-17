@@ -24,6 +24,12 @@ If you would like to contribute to Coordinatorr in any way, it is most welcome. 
 
 If you submit a PR, please only do so against the dev branch. PR against master will be rejected. As for your code, please check if it is properly commented and just contains ONE feature or bugfix per PR. Please also add a meaningful description what your new feature or bugfix does and why it is beneficial for coordinatorr.
 
+## Contributors
+
+Special thanks to our contributors, who have helped to improve this software:
+
+[Bastien Cabay ON4BCY](https://github.com/Bastiti)
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
