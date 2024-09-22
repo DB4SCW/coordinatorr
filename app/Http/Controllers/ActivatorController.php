@@ -32,7 +32,7 @@ class ActivatorController extends Controller
         $inputattributes['activator_callsign'] = strtoupper($inputattributes['activator_callsign']);
         $inputattributes['activator_callsign'] = str_replace(' ', '', $inputattributes['activator_callsign']);
         
-        //Input validieren
+        //validate input
         $validator = \Illuminate\Support\Facades\Validator::make($inputattributes, [
             'activator_callsign' => 'required|unique:activators,call|max:10'
         ], 
@@ -42,12 +42,12 @@ class ActivatorController extends Controller
             'activator_callsign.max' => 'Activator callsign may not be longer than 10 characters.'
         ]);
 
-        //Validierungsfail behandeln
+        //handle fail of validation
         if ($validator->fails()) {
             return redirect()->route('adminpanel')->with('danger', skd_validatorerrors($validator))->withInput();
         }
 
-        //validierte Felder abholen
+        //get validated fields
         $attributes = $validator->validated();
 
         //create new activator

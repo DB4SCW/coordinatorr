@@ -10,11 +10,19 @@ class CallsignController extends Controller
     public function status(Callsign $callsign)
     {
         //check if callsign is currently active
-        $current = $callsign->activations()->where('end', null)->first();
+        $current_activations = $callsign->activations()->where('end', null)->orderBy('start', 'desc');
 
         //display current information
-        if($current != null)
+        if($current_activations->count() > 0)
         {
+            //sort by hamalert data, get hamalert enabled activations first
+            $current_activations_sorted = $current_activations->get()->sortByDesc(function ($item) {
+                return !is_null($item->hamalert_spot_datetime);
+            });
+            
+            //get first activation
+            $current = $current_activations_sorted->first();
+
             //display hamalert spot data if available
             if($current->hamalert_spot_datetime != null)
             {
@@ -63,7 +71,7 @@ class CallsignController extends Controller
         $inputattributes['event_callsign'] = strtoupper($inputattributes['event_callsign']);
         $inputattributes['event_callsign'] = str_replace(' ', '', $inputattributes['event_callsign']);
         
-        //Input validieren
+        //validate input
         $validator = \Illuminate\Support\Facades\Validator::make($inputattributes, [
             'event_callsign' => 'required|unique:callsigns,call|max:10'
         ], 
@@ -73,12 +81,12 @@ class CallsignController extends Controller
             'event_callsign.max' => 'Event callsign may not be longer than 10 characters.'
         ]);
 
-        //Validierungsfail behandeln
+        //handle fail of validation
         if ($validator->fails()) {
             return redirect()->route('adminpanel')->with('danger', skd_validatorerrors($validator))->withInput();
         }
 
-        //validierte Felder abholen
+        //get validated fields
         $attributes = $validator->validated();
 
         //create new activator

@@ -22,4 +22,14 @@ class Activation extends Model
     {
         return $this->hasOne(Activator::class, "id", "activator_id");
     }
+
+    public function band() : HasOne
+    {
+        return $this->hasOne(Band::class, 'id', 'band_id');
+    }
+
+    public function mode() : HasOne
+    {
+        return $this->hasOne(Mode::class, 'id', 'mode_id');
+    }
 }

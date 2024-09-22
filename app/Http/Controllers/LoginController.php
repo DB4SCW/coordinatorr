@@ -40,6 +40,9 @@ class LoginController extends Controller
             // do nothing, cannot reach info for updated version
         }
 
+        //assure there is an app-mode in the configuration
+        db4scw_assure_appmode_in_env();
+
         //check if upgrade is needed and set updateinfo for display on GUI
         if(version_compare($available_version, $installed_version, '>'))
         {
