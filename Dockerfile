@@ -1,15 +1,21 @@
 # Use the official Apache image as a base
-FROM php:8.4-apache
+FROM php:apache-bullseye
 
 WORKDIR /var/www/coordinatorr
 
-# Install required dependencies for adding PHP repository
-RUN apt-get update -y && \
-    apt-get install -y software-properties-common curl unzip
-# Manually add the ondrej/php PPA
-RUN echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu focal main" \
-    | tee /etc/apt/sources.list.d/ondrej-php.list && \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E5267A6C
+# Set non-interactive mode for apt
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Update package list and install required packages
+RUN apt-get update && \
+    apt-get install -y apt-transport-https lsb-release ca-certificates gnupg2 && \
+    apt-get clean
+
+# Add the ondrej/php repository
+RUN wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add - && \
+    echo "deb https://packages.sury.org/php/ $(lsb_release -cs) main" \
+    | tee /etc/apt/sources.list.d/php.list
+
 
 # Add PHP repository and install PHP along with necessary extensions
 RUN apt-get update -y && \
