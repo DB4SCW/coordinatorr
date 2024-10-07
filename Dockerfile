@@ -1,43 +1,38 @@
 # Use the official Apache image as a base
-FROM php:8.4-rc-apache-bullseye
+FROM ubuntu:20.04
 
 WORKDIR /var/www/coordinatorr
-
-# Set non-interactive mode for apt
-ENV DEBIAN_FRONTEND=noninteractive
 
 # Update package list and install required packages
 RUN apt-get update && \
     apt-get install -y \
+    apache2 \
     apt-transport-https \
     lsb-release \
     ca-certificates \
     gnupg2 \
+    software-properties-common \
     wget && \
     apt-get clean
 
-# Add the ondrej/php repository and its GPG key
-RUN wget -qO /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
-    echo "deb https://packages.sury.org/php/ $(lsb_release -cs) main" \
-    | tee /etc/apt/sources.list.d/php.list
-
-
 # Add PHP repository and install PHP along with necessary extensions
-RUN apt-get update -y && \
+RUN add-apt-repository -y ppa:ondrej/php && \
+    apt-get update -y && \
     apt-get install -y \
     libapache2-mod-php \
-    php8.4-common \
-    php8.4-xml \
-    php8.4-mysql \
-    php8.4-pgsql \
-    php8.4-gd \
-    php8.4-opcache \
-    php8.4-mbstring \
-    php8.4-tokenizer \
-    php8.4-json \
-    php8.4-bcmath \
-    php8.4-zip \
-    php8.4-sqlite3
+    php \
+    php-common \
+    php-xml \
+    php-mysql \
+    php-pgsql \
+    php-gd \
+    php-opcache \
+    php-mbstring \
+    php-tokenizer \
+    php-json \
+    php-bcmath \
+    php-zip \
+    php-sqlite3
 
     # Enable the Apache rewrite module
 RUN a2enmod rewrite
