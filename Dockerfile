@@ -26,19 +26,18 @@ RUN wget -qO /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gp
 RUN apt-get update -y && \
     apt-get install -y \
     libapache2-mod-php \
-    php \
-    php-common \
-    php-xml \
-    php-mysql \
-    php-pgsql \
-    php-gd \
-    php-opcache \
-    php-mbstring \
-    php-tokenizer \
-    php-json \
-    php-bcmath \
-    php-zip \
-    php-sqlite3
+    php8.4-common \
+    php8.4-xml \
+    php8.4-mysql \
+    php8.4-pgsql \
+    php8.4-gd \
+    php8.4-opcache \
+    php8.4-mbstring \
+    php8.4-tokenizer \
+    php8.4-json \
+    php8.4-bcmath \
+    php8.4-zip \
+    php8.4-sqlite3
 
     # Enable the Apache rewrite module
 RUN a2enmod rewrite
