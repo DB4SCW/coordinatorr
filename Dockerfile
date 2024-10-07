@@ -1,5 +1,5 @@
 # Use the official Apache image as a base
-FROM php:8.1-apache
+FROM php:8.4-apache
 
 WORKDIR /var/www/coordinatorr
 
