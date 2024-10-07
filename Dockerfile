@@ -3,6 +3,8 @@ FROM ubuntu:20.04
 
 WORKDIR /var/www/coordinatorr
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 # Update package list and install required packages
 RUN apt-get update -y && \
     apt-get install -y \
