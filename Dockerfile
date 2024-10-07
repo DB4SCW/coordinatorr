@@ -4,16 +4,10 @@ FROM ubuntu:20.04
 WORKDIR /var/www/coordinatorr
 
 # Update package list and install required packages
-RUN apt-get update && \
+RUN apt-get update -y && \
     apt-get install -y \
     apache2 \
-    apt-transport-https \
-    lsb-release \
-    ca-certificates \
-    gnupg2 \
     software-properties-common \
-    wget && \
-    apt-get clean
 
 # Add PHP repository and install PHP along with necessary extensions
 RUN add-apt-repository -y ppa:ondrej/php && \
