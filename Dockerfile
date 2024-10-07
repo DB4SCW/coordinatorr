@@ -1,11 +1,11 @@
 # Use the official Apache image as a base
-FROM httpd:latest
+FROM php:8.1-apache
 
 WORKDIR /var/www/coordinatorr
 
 # Install required dependencies for adding PHP repository
 RUN apt-get update -y && \
-    apt-get install -y software-properties-common curl unzip apache2
+    apt-get install -y software-properties-common curl unzip
 
 # Add PHP repository and install PHP along with necessary extensions
 RUN add-apt-repository -y ppa:ondrej/php && \
