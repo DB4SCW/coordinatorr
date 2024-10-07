@@ -8,11 +8,16 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Update package list and install required packages
 RUN apt-get update && \
-    apt-get install -y apt-transport-https lsb-release ca-certificates gnupg2 && \
+    apt-get install -y \
+    apt-transport-https \
+    lsb-release \
+    ca-certificates \
+    gnupg2 \
+    wget && \
     apt-get clean
 
-# Add the ondrej/php repository
-RUN wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add - && \
+# Add the ondrej/php repository and its GPG key
+RUN wget -qO /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
     echo "deb https://packages.sury.org/php/ $(lsb_release -cs) main" \
     | tee /etc/apt/sources.list.d/php.list
 
