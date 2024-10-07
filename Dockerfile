@@ -36,15 +36,13 @@ RUN curl -sS https://getcomposer.org/installer | php && \
 # Create and configure the virtual host file
 RUN mkdir -p /etc/apache2/sites-available /var/www/coordinatorr/public && \
     echo '<VirtualHost *:80> \
-    ServerAdmin admin@example.com \
-    ServerName mydomain.com \
     DocumentRoot "/var/www/coordinatorr/public" \
     <Directory /var/www/coordinatorr/public> \
-    Options Indexes MultiViews FollowSymLinks \
-    AllowOverride All \
-    Order allow,deny \
-    allow from all \
-    Require all granted \
+        Options Indexes MultiViews FollowSymLinks \
+        AllowOverride All \
+        Order allow,deny \
+        allow from all \
+        Require all granted \
     </Directory> \
     ErrorLog ${APACHE_LOG_DIR}/error.log \
     CustomLog ${APACHE_LOG_DIR}/access.log combined \

@@ -6,7 +6,7 @@ services:
     ports:
       - "8073:80"
     volumes:
-      - ./.env:/var/www/coordinatorr/.env # Bind mount for .env
+      - PATH_TO_ENV_FILE/.env:/var/www/coordinatorr/.env # Bind mount for .env
       - coordinatorr_db:/var/www/coordinatorr/database # volume database directory (optional)
     environment:
       APACHE_RUN_USER: www-data
