@@ -51,6 +51,7 @@ If you submit a PR, please only do so against the dev branch. PR against master 
 Special thanks to our contributors, who have helped to improve this software:
 
 [Bastien Cabay ON4BCY](https://github.com/Bastiti)
+
 [Jules F4IEY](https://github.com/f4iey)
 
 ## License
