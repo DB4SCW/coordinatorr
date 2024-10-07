@@ -5,7 +5,7 @@ WORKDIR /var/www/coordinatorr
 
 # Install required dependencies for adding PHP repository
 RUN apt-get update -y && \
-    apt-get install -y software-properties-common curl unzip
+    apt-get install -y software-properties-common curl unzip apache2
 
 # Add PHP repository and install PHP along with necessary extensions
 RUN add-apt-repository -y ppa:ondrej/php && \
