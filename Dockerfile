@@ -6,10 +6,13 @@ WORKDIR /var/www/coordinatorr
 # Install required dependencies for adding PHP repository
 RUN apt-get update -y && \
     apt-get install -y software-properties-common curl unzip
+# Manually add the ondrej/php PPA
+RUN echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu focal main" \
+    | tee /etc/apt/sources.list.d/ondrej-php.list && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E5267A6C
 
 # Add PHP repository and install PHP along with necessary extensions
-RUN add-apt-repository -y ppa:ondrej/php && \
-    apt-get update -y && \
+RUN apt-get update -y && \
     apt-get install -y \
     libapache2-mod-php \
     php \
