@@ -1,36 +1,15 @@
 # Use the official Apache image as a base
-FROM ubuntu:20.04
+FROM php:apache-bullseye
 
 WORKDIR /var/www/coordinatorr
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Update package list and install required packages
-RUN apt-get update -y && \
-    apt-get install -y \
-    apache2 \
-    software-properties-common
+# Add PHP necessary extensions
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN install-php-extensions gd xml mysql pgsql opcache mbstring tokenizer json bcmatch zip sqlite3
 
-# Add PHP repository and install PHP along with necessary extensions
-RUN add-apt-repository -y ppa:ondrej/php && \
-    apt-get update -y && \
-    apt-get install -y \
-    libapache2-mod-php \
-    php \
-    php-common \
-    php-xml \
-    php-mysql \
-    php-pgsql \
-    php-gd \
-    php-opcache \
-    php-mbstring \
-    php-tokenizer \
-    php-json \
-    php-bcmath \
-    php-zip \
-    php-sqlite3
-
-    # Enable the Apache rewrite module
+# Enable the Apache rewrite module
 RUN a2enmod rewrite
 
 # Install Composer
@@ -73,9 +52,7 @@ RUN php artisan migrate
 RUN php artisan storage:link
 USER root
 RUN service apache2 restart
+USER www-data
 
 # Expose port 80 for Apache server
 EXPOSE 80
-
-# Set the command to run Apache in the foreground
-CMD ["httpd-foreground"]
