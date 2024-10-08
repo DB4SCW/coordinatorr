@@ -28,16 +28,12 @@ RUN mkdir -p /etc/apache2/sites-available /var/www/coordinatorr/public && \
     \tErrorLog ${APACHE_LOG_DIR}/error.log\n \
     \tCustomLog ${APACHE_LOG_DIR}/access.log combined\n \
     </VirtualHost>' > /etc/apache2/sites-available/coordinatorr.conf
-RUN cat /etc/apache2/sites-available/coordinatorr.conf
-
-
 
 # Enable the new virtual host
 RUN a2ensite coordinatorr.conf && \
     service apache2 restart
 
 COPY . .
-USER www-data
 RUN composer install --no-dev
 COPY .env.example .env
 RUN php artisan key:generate
@@ -51,7 +47,6 @@ VOLUME /var/www/coordinatorr/database
 # Prepare database
 RUN php artisan migrate
 RUN php artisan storage:link
-USER root
 RUN service apache2 restart
 USER www-data
 
