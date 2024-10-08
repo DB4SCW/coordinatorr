@@ -28,6 +28,7 @@ RUN mkdir -p /etc/apache2/sites-available /var/www/coordinatorr/public && \
     ErrorLog ${APACHE_LOG_DIR}/error.log \
     CustomLog ${APACHE_LOG_DIR}/access.log combined \
     </VirtualHost>' > /etc/apache2/sites-available/coordinatorr.conf
+RUN cat /etc/apache2/sites-available/coordinatorr.conf
 
 # Enable the new virtual host
 RUN a2ensite coordinatorr.conf && \
