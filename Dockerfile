@@ -1,5 +1,5 @@
 # Use the official Apache image as a base
-FROM php:5.6.11-apache
+FROM php:apache
 
 WORKDIR /var/www/coordinatorr
 
@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Add PHP necessary extensions
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-RUN install-php-extensions gd mysql pgsql opcache bcmath zip
+RUN install-php-extensions gd pgsql opcache bcmath zip
 
 # Enable the Apache rewrite module
 RUN a2enmod rewrite
