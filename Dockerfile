@@ -1,5 +1,5 @@
 # Use the official Apache image as a base
-FROM php:5.6-apache-bullseye
+FROM php:5.6.11-apache
 
 WORKDIR /var/www/coordinatorr
 
