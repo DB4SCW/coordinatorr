@@ -18,18 +18,16 @@ RUN curl -sS https://getcomposer.org/installer | php && \
 
 # Create and configure the virtual host file
 RUN mkdir -p /etc/apache2/sites-available /var/www/coordinatorr/public && \
-    cat <<EOF > /etc/apache2/sites-available/coordinatorr.conf
-    <VirtualHost *:80>
-        DocumentRoot "/var/www/coordinatorr/public"
-        <Directory /var/www/coordinatorr/public>
-            Options Indexes MultiViews FollowSymLinks
-            AllowOverride All
-            Require all granted
-        </Directory>
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
-    </VirtualHost>
-    EOF
+    echo -e '<VirtualHost *:80>\n \
+    DocumentRoot "/var/www/coordinatorr/public"\n \
+    <Directory /var/www/coordinatorr/public>\n \
+    Options Indexes MultiViews FollowSymLinks\n \
+    AllowOverride All\n \
+    Require all granted\n \
+    </Directory>\n \
+    ErrorLog ${APACHE_LOG_DIR}/error.log\n \
+    CustomLog ${APACHE_LOG_DIR}/access.log combined\n \
+    </VirtualHost>' > /etc/apache2/sites-available/coordinatorr.conf
 
 
 
