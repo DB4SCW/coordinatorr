@@ -11,7 +11,7 @@ Read about how this project came to be on my [Blog](https://www.db4scw.de/introd
 73, de Stefan, DB4SCW
 
 ## Running using Docker
-A docker container can be created using the following:
+A docker container can be created using the following. it is meant to be run with the integrated `sqlite` database:
 ```bash
 docker run --rm -d \
   --name coordinatorr \

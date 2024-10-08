@@ -23,13 +23,11 @@ RUN mkdir -p /etc/apache2/sites-available /var/www/coordinatorr/public && \
     <Directory /var/www/coordinatorr/public> \
         Options Indexes MultiViews FollowSymLinks \
         AllowOverride All \
-        Order allow,deny \
-        allow from all \
         Require all granted \
     </Directory> \
     ErrorLog ${APACHE_LOG_DIR}/error.log \
     CustomLog ${APACHE_LOG_DIR}/access.log combined \
-</VirtualHost>' > /etc/apache2/sites-available/coordinatorr.conf
+    </VirtualHost>' > /etc/apache2/sites-available/coordinatorr.conf
 
 # Enable the new virtual host
 RUN a2ensite coordinatorr.conf && \
