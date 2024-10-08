@@ -19,6 +19,8 @@ RUN curl -sS https://getcomposer.org/installer | php && \
 # Create and configure the virtual host file
 RUN mkdir -p /etc/apache2/sites-available /var/www/coordinatorr/public && \
     echo '<VirtualHost *:80>\n \
+    \tServerName localhost"\n \
+    \tServerAlias localhost"\n \
     \tDocumentRoot "/var/www/coordinatorr/public"\n \
     \t<Directory /var/www/coordinatorr/public>\n \
     \t\tOptions Indexes MultiViews FollowSymLinks\n \
@@ -47,6 +49,9 @@ VOLUME /var/www/coordinatorr/database
 # Prepare database
 RUN php artisan migrate
 RUN php artisan storage:link
+
+# chage permissions
+RUN chown -R www-data:www-data /var/www/coordinatorr/public && chmod -R 755 /var/www/coordinatorr/public
 RUN service apache2 restart
 USER www-data
 
