@@ -26,6 +26,9 @@ RUN sed -i "s/DB_DATABASE=laravel/DB_DATABASE=database.sqlite/" .env
 RUN touch /var/www/html/database/database.sqlite
 VOLUME /var/www/html/database
 
+# Change some env settings
+RUN sed -i "s/SINGLEOP/MULTIOPMODE/" .env
+
 # Prepare database
 RUN php artisan migrate
 RUN php artisan storage:link
