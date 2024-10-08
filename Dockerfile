@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Add PHP necessary extensions
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-RUN install-php-extensions gd xml mysql pgsql opcache mbstring tokenizer json bcmatch zip sqlite3
+RUN install-php-extensions gd mysql pgsql opcache bcmatch zip
 
 # Enable the Apache rewrite module
 RUN a2enmod rewrite
