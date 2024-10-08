@@ -18,7 +18,21 @@ RUN curl -sS https://getcomposer.org/installer | php && \
 
 # Create and configure the virtual host file
 RUN mkdir -p /etc/apache2/sites-available /var/www/coordinatorr/public && \
-    echo -e "<VirtualHost *:80>\nDocumentRoot \"/var/www/coordinatorr/public\"\n<Directory /var/www/coordinatorr/public>\nOptions Indexes MultiViews FollowSymLinks\nAllowOverride All\nRequire all granted\n</Directory>\nErrorLog ${APACHE_LOG_DIR}/error.log \nCustomLog ${APACHE_LOG_DIR}/access.log combined\n</VirtualHost>\n" > /etc/apache2/sites-available/coordinatorr.conf
+    cat <<EOF > /etc/apache2/sites-available/coordinatorr.conf
+    <VirtualHost *:80>
+        DocumentRoot "/var/www/coordinatorr/public"
+        <Directory /var/www/coordinatorr/public>
+            Options Indexes MultiViews FollowSymLinks
+            AllowOverride All
+            Require all granted
+        </Directory>
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+    </VirtualHost>
+    EOF
+
+
+
 # Enable the new virtual host
 RUN a2ensite coordinatorr.conf && \
     service apache2 restart
