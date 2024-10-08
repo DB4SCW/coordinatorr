@@ -18,7 +18,7 @@ RUN curl -sS https://getcomposer.org/installer | php && \
 
 # Create and configure the virtual host file
 RUN mkdir -p /etc/apache2/sites-available /var/www/coordinatorr/public && \
-    echo -e '<VirtualHost *:80>\n \
+    echo '<VirtualHost *:80>\n \
     \tDocumentRoot "/var/www/coordinatorr/public"\n \
     \t<Directory /var/www/coordinatorr/public>\n \
     \t\tOptions Indexes MultiViews FollowSymLinks\n \
