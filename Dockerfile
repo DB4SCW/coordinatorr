@@ -31,7 +31,7 @@ RUN php artisan migrate
 RUN php artisan storage:link
 
 # change permissions and set document root
-sed -i "s/html/html\/public/g" /etc/apache2/sites-enabled
+RUN sed -i "s/html/html\/public/g" /etc/apache2/sites-enabled
 RUN chown -R www-data:www-data /var/www/html/* && chmod -R 755 /var/www/html/*
 RUN service apache2 restart
 USER www-data
