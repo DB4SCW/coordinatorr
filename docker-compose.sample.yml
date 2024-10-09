@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  coordinatorr:
+    image: ghcr.io/DB4SCW/coordinatorr:master
+    container_name: coordinatorr
+    ports:
+      - "8073:80"
+    volumes:
+      - PATH_TO_ENV_FILE/.env:/var/www/coordinatorr/.env # Bind mount for .env
+      - coordinatorr_db:/var/www/coordinatorr/database # volume database directory (optional)
+    environment:
+      APACHE_RUN_USER: www-data
+      APACHE_RUN_GROUP: www-data
+    restart: unless-stopped
