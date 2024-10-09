@@ -4,33 +4,11 @@
 
 Coordinatorr is a simple, free ham radio award event callsign booking software. It is based on the [Laravel](https://laravel.com) PHP Framework.
 
-You can find the feature list, all information including system requirements and an installation guide, as well as the complete documentation [on this page](https://hamawardz.de).
+You can find the feature list, all information including system requirements and an installation guide, as well as the complete documentation [on this page](https://hamawardz.de). Instructions on how to run this software as a docker container will be there as well.
 
 Read about how this project came to be on my [Blog](https://www.db4scw.de/introducing-eventcoordinatorr/).
 
 73, de Stefan, DB4SCW
-
-## Running using Docker
-A docker container can be created using the following. it is meant to be run with the integrated `sqlite` database:
-```bash
-docker run --rm -d \
-  --name coordinatorr \
-  -p 8073:80 \
-  -v PATH_TO_ENV_FILE/.env:/var/www/coordinatorr/.env \ # Bind mount for .env
-  -v coordinatorr_db:/var/www/coordinatorr/database \ # Volume for the database
-  -e APACHE_RUN_USER=www-data \
-  -e APACHE_RUN_GROUP=www-data \
-  --restart unless-stopped \
-  ghcr.io/DB4SCW/coordinatorr:master
-
-```
-Or using the compose file `docker-compose.sample.yml`:
-```bash
-cp docker-compose.sample.yml docker-compose.yml
-docker compose up -d
-```
-> [!IMPORTANT]
-> To manage the running instance, you need to bind mount the `.env` file to a known location (replace PATH_TO_ENV_FILE accordingly) and edit it according to your configuration, as explained in detail [here](https://hamawardz.de/docs/coordinatorr/installation/#step-4-configure-your-software-environment).
 
 ## Security Vulnerabilities
 
@@ -50,9 +28,7 @@ If you submit a PR, please only do so against the dev branch. PR against master 
 
 Special thanks to our contributors, who have helped to improve this software:
 
-[Bastien Cabay ON4BCY](https://github.com/Bastiti)
-
-[Jules F4IEY](https://github.com/f4iey)
+[Bastien Cabay ON4BCY](https://github.com/Bastiti), [Jules F4IEY](https://github.com/f4iey)
 
 ## License
 
