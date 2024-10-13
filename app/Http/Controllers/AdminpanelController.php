@@ -14,6 +14,7 @@ class AdminpanelController extends Controller
 {
     public function index()
     {
+             
         $activators = Activator::orderBy('call', 'ASC')->get();
         $eventcalls = Callsign::orderBy('call', 'ASC')->get();
         $modes = Appmode::all();
