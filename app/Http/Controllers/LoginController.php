@@ -62,8 +62,9 @@ class LoginController extends Controller
         if(auth()->check())
         {
             auth()->logout();
+            session()->invalidate();
         }
-
+        
         //return to home page
         return redirect()->route('home')->with('success', 'Logout successful. Hope to see you again soon.');
     }
