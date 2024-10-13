@@ -33,8 +33,10 @@ RUN php artisan storage:link
 # change permissions and set document root
 RUN sed -i "s/html/html\/public/g" /etc/apache2/sites-enabled/000-default.conf
 RUN chown -R www-data:www-data /var/www/html/* && chmod -R 755 /var/www/html/*
+RUN chown www-data:www-data /var/www/html/.env && chmod -R 755 /var/www/html/.env
 RUN service apache2 restart
 USER www-data
+
 
 # Expose port 80 for Apache server
 EXPOSE 80
