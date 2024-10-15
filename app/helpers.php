@@ -68,3 +68,30 @@ function db4scw_assure_appmode_in_env() : void
     //close function
     return;
 }
+
+function stalinsort(array $array, bool $reverse = false): array {
+    
+    //if array is empty, return empty array
+    if (empty($array)) {
+        return [];
+    }
+
+    //only add elements that are already sorted to the array, eliminate the rest of the elements
+    foreach ($array as $element) {
+
+        //first element is always fine
+        if(empty($sortedArray))
+        {
+            $sortedArray[] = $element;
+            continue;
+        }
+
+        //only add element if greater or equal than the last one
+        if ($element >= end($sortedArray)) {
+            $sortedArray[] = $element;
+        }
+    }
+
+    //return result, reverse if needed
+    return $reverse ? array_reverse($sortedArray) : $sortedArray;
+}
