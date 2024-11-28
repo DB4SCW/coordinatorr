@@ -37,14 +37,17 @@ Route::get('/planned_activation/{plannedactivation:id}/delete', [PlannedActivati
 //QRZ IFrame Integration
 Route::get('/status/{callsign:call}', [CallsignController::class, 'status'])->name('getstatus');
 
-//Login Route
-Route::get('/adminkey/' . urlencode(env('ADMIN_PANEL_SECRET', 'simsalabim')), [LoginController::class, 'login'])->name('login');
+//Login Route with token
+Route::get('/adminkey/' . urlencode(env('ADMIN_PANEL_SECRET', 'simsalabim')), [LoginController::class, 'login'])->name('loginwithtoken');
+
+//dummy login route to redirect to home (necessary because of auth middleware)
+Route::get('/login', function() { return redirect('/'); })->name('login');
 
 //Routes for logged in users
-Route::middleware('auth')->group(function () {
+Route::middleware('auth')->group(function () { 
 
     //only logged in users can logout
-    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');    
+    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');   
 
     //Adminpanel
     Route::get('/admin', [AdminpanelController::class, 'index'])->name('adminpanel');
