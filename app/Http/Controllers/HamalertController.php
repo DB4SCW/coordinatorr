@@ -37,7 +37,7 @@ class HamalertController extends Controller
 
         //extract data from hamalert spot
         $spotter = (string)$data['spotter'] ?? '';
-        $comment = (string)$data['comment'] ?? '';
+        $comment = (string)($data['comments'] ?? 'No comment provided');
         $band = (string)$data['band'];
         $frequency = (float)$data['frequency'];
         $mode = strtoupper((string)$data['modeDetail']);
