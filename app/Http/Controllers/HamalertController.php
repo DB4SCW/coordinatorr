@@ -7,6 +7,7 @@ use App\Models\Appmode;
 use App\Models\Band;
 use App\Models\Mode;
 use Illuminate\Http\Request;
+use Spatie\DiscordAlerts\Facades\DiscordAlert;
 
 class HamalertController extends Controller
 {
@@ -16,10 +17,10 @@ class HamalertController extends Controller
         $appmode = env('COORDINATORR_MODE', 'SINGLEOP');
 
         //check if Appmode is valid
-        if(Appmode::where('option', $appmode)->count() < 1) {
-            return response()->json(['message' => 'The mode of this coordinatorr instance is not configured well.'], 500); 
+        if (Appmode::where('option', $appmode)->count() < 1) {
+            return response()->json(['message' => 'The mode of this coordinatorr instance is not configured well.'], 500);
         }
-        
+
         //get json from request
         $data = request()->json()->all();
 
@@ -30,20 +31,20 @@ class HamalertController extends Controller
         $callsign = Callsign::where('call', $spot_callsign)->first();
 
         //return callsign not found
-        if($callsign == null)
-        {
-            return response()->json(['message' => 'Callsign ' . $spot_callsign . ' not found in this instance.'], 404); 
+        if ($callsign == null) {
+            return response()->json(['message' => 'Callsign ' . $spot_callsign . ' not found in this instance.'], 404);
         }
 
         //extract data from hamalert spot
         $spotter = (string)$data['spotter'] ?? '';
+        $comment = (string)$data['comment'] ?? '';
+        $band = (string)$data['band'];
         $frequency = (float)$data['frequency'];
         $mode = strtoupper((string)$data['modeDetail']);
         $time = \Carbon\Carbon::createFromFormat('Y-m-d H:i', \Carbon\Carbon::now()->format('Y-m-d') . ' ' . $data['time']);
 
         //get coordinatorr-mode
-        switch ($mode) 
-        {
+        switch ($mode) {
             case 'CW':
                 $coordinatorr_mode = "CW";
                 break;
@@ -85,14 +86,57 @@ class HamalertController extends Controller
 
         //add constrictions based on appmode
         $current_activation = db4scw_add_mode_constrictions($current_activation, $appmode, $bandid, $modeid);
-        
+
         //get activation from database
         $current_activation = $current_activation->first();
+        $APPNAME = env('APP_NAME');
+        $URL = env('APP_URL');
+        $avatar = env('DISCORD_AVATAR');
+        $username = env('DISCORD_USERNAME');
 
         //return "Accepted" when callsign is fine, but no active activation is present
-        if($current_activation == null)
-        {
-            return response()->json(['message' => 'Callsign ' . $spot_callsign . ' has no current activation.'], 202); 
+        if ($current_activation == null) {
+            // Check if DISCORD_ENABLED is set to true
+            if (env('DISCORD_ENABLED', false)) {
+                DiscordAlert::message(":warning: {$spot_callsign} coordination conflict: No operator found. Please resolve on: {$URL}", [
+                    [
+                        'title' => "{$spot_callsign} spotted",
+                        'description' => "No operator found for {$spot_callsign}.",
+                        'color' => '#E77625',
+                        'fields' => [
+                            [
+                                'name' => 'Band / Frequency',
+                                'value' => $band . ' / ' . $frequency . 'MHz',
+                                'inline' => true
+                            ],
+                            [
+                                'name' => 'Mode',
+                                'value' => $mode,
+                                'inline' => true
+                            ],
+                            [
+                                'name' => 'Comment',
+                                'value' => $comment,
+                            ],
+                            [
+                                'name' => 'Time',
+                                'value' => '<t:' . time() . ':R>',
+                            ]
+                        ],
+                        'author' => [
+                            'name' => $APPNAME,
+                            'url' => $URL,
+                        ],
+                        'footer' => [
+                            'text' => 'Spot received from HamAlert'
+                        ],
+                        'username' => $username,
+                        'avatar_url' => $avatar
+
+                    ]
+                ]);
+            }
+            return response()->json(['message' => 'Callsign ' . $spot_callsign . ' has no current activation.'], 202);
         }
 
         //set new info for activation
@@ -102,8 +146,47 @@ class HamalertController extends Controller
         $current_activation->hamalert_spot_datetime = $time;
         $current_activation->hamalert_spot_count = ($current_activation->hamalert_spot_count ?? 0) + 1;
         $current_activation->save();
+        $activator_callsign = $current_activation->activator->call;
+
+        // Check if DISCORD_ENABLED is set to true
+        if (env('DISCORD_ENABLED', false)) {
+            DiscordAlert::message(":white_check_mark: {$spot_callsign} spotted", [
+                [
+                    'title' => "{$spot_callsign} spotted",
+                    'description' => "{$activator_callsign} has been spotted as {$spot_callsign}.",
+                    'color' => '#00FF00',
+                    'fields' => [
+                        [
+                            'name' => 'Band / Frequency',
+                            'value' => $band . ' / ' . $frequency . 'MHz',
+                            'inline' => true
+                        ],
+                        [
+                            'name' => 'Mode',
+                            'value' => $mode,
+                            'inline' => true
+                        ],
+                        [
+                            'name' => 'Comment',
+                            'value' => $comment,
+                        ],
+                        [
+                            'name' => 'Time',
+                            'value' => '<t:' . time() . ':R>',
+                        ]
+                    ],
+                    'author' => [
+                        'name' => $APPNAME,
+                        'url' => $URL,
+                    ],
+                    'footer' => [
+                        'text' => 'Spot received from HamAlert'
+                    ]
+                ]
+            ]);
+        }
 
         //return positive resopnse
-        return response()->json(['message' => 'New info for callsign ' . $spot_callsign . ' has been set.'], 200); 
+        return response()->json(['message' => 'New info for callsign ' . $spot_callsign . ' has been set.'], 200);
     }
 }

@@ -4,7 +4,7 @@
 
 Coordinatorr is a simple, free ham radio award event callsign booking software. It is based on the [Laravel](https://laravel.com) PHP Framework.
 
-You can find the feature list, all information including system requirements and an installation guide, as well as the complete documentation [on this page](https://hamawardz.de).
+You can find the feature list, all information including system requirements and an installation guide, as well as the complete documentation [on this page](https://hamawardz.de). Instructions on how to run this software as a docker container will be there as well.
 
 Read about how this project came to be on my [Blog](https://www.db4scw.de/introducing-eventcoordinatorr/).
 
@@ -28,7 +28,7 @@ If you submit a PR, please only do so against the dev branch. PR against master 
 
 Special thanks to our contributors, who have helped to improve this software:
 
-[Bastien Cabay ON4BCY](https://github.com/Bastiti)
+[Bastien Cabay ON4BCY](https://github.com/Bastiti), [Jules F4IEY](https://github.com/f4iey)
 
 ## License
 
