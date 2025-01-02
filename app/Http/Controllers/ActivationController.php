@@ -200,11 +200,21 @@ class ActivationController extends Controller
             return redirect()->back()->with('success', 'Log was already received.');
         }
 
+        //get open activations without logs
+        $activations = Activation::orderBy('start')->where('log_received', null)->where('end', '!=', null)->with('callsign', 'activator')->get();
+
         //set logreceive-date
         $activation->log_received = \Carbon\Carbon::now();
         $activation->save();
 
         //return redirect with success
-        return redirect()->route('activationswithoutlogs')->with('success', 'Logstatus successfully changed.');
+        if($activations->count() <= 1)
+        {
+            $redir = redirect()->route('adminpanel');
+        }else{
+            $redir = redirect()->route('activationswithoutlogs');
+        }
+        
+        return $redir->with('success', 'Logstatus successfully changed.');
     }
 }
