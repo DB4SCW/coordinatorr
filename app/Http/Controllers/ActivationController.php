@@ -177,4 +177,34 @@ class ActivationController extends Controller
         return redirect()->route('home')->with('success', 'Activation ended successfully.');
 
     }
+
+    public function showopen(){
+
+        //get open activations without logs
+        $activations = Activation::orderBy('start')->where('log_received', null)->where('end', '!=', null)->with('callsign', 'activator')->get();
+
+        if($activations->count() < 1)
+        {
+            return redirect()->back()->with('success', 'No activations without logs found.');
+        }
+        
+        //show view
+        return view('activationswithoutlogs', ['activations' => $activations]);        
+    }
+
+    public function receivelog(Activation $activation)
+    {
+        //check if log was already received
+        if($activation->log_received != null)
+        {
+            return redirect()->back()->with('success', 'Log was already received.');
+        }
+
+        //set logreceive-date
+        $activation->log_received = \Carbon\Carbon::now();
+        $activation->save();
+
+        //return redirect with success
+        return redirect()->route('activationswithoutlogs')->with('success', 'Logstatus successfully changed.');
+    }
 }
