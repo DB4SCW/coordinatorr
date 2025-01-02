@@ -40,7 +40,7 @@
                         </select>
                     </div>
                     <div class="text-center">
-                        <input type="submit" class="btn btn-primary" value="Add event callsign">
+                        <input type="submit" class="btn btn-primary" value="Change coordinatorr mode">
                     </div>
                 </form>
             </div>
