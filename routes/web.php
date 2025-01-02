@@ -65,6 +65,10 @@ Route::middleware('auth')->group(function () {
     //Mode handling
     Route::post('/admin/switch_mode', [AdminpanelController::class, 'switchmode']);
 
+    //log handling
+    Route::get('/activations/open', [ActivationController::class, 'showopen'])->name('activationswithoutlogs');
+    Route::get('/activation/{activation:id}/logreceived', [ActivationController::class, 'receivelog']);
+
 });
 
 //Hamalert integration

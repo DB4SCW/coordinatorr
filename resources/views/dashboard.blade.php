@@ -1,5 +1,5 @@
 <x-layout>
-    <x-slot name="title">DB4SCW Eventcoordination</x-slot>
+    <x-slot name="title">Coordinatorr</x-slot>
 
     <x-slot name="slot">
         <div class="container mt-5">

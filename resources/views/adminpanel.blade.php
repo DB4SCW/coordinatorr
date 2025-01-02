@@ -1,8 +1,8 @@
 <x-layout>
-    <x-slot name="title">DB4SCW Eventcoordination Adminpanel</x-slot>
+    <x-slot name="title">Coordinatorr Adminpanel</x-slot>
 
     <x-slot name="slot">
-        <div class="container mt-5">
+        <div class="container mt-5" style="margin-top: 50px;">
             <form action="/admin/add_activator" method="post">
                 @csrf
                 <div class="form-group">
