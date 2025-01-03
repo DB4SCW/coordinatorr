@@ -13,6 +13,9 @@
                             <th>Activatorcall</th>
                             <th>From (UTC)</th>
                             <th>To (UTC)</th>
+                            @if($appmode != 'SINGLEOP')
+                            <th>Band</th>
+                            @endif
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -23,6 +26,9 @@
                             <td>{{ $activation->activator->call }}</td>
                             <td>{{ $activation->start->setTimezone('UTC') }} UTC</td>
                             <td>{{ $activation->end->setTimezone('UTC') }} UTC</td>
+                            @if($appmode != 'SINGLEOP')
+                            <td>{{ $activation->band_id == null ? '' : $activation->band->band }}</td>
+                            @endif
                             <td><a href="/activation/{{ $activation->id }}/logreceived"><button class="btn btn-primary">Log received</button></a></td>
                         </tr>
                         @endforeach

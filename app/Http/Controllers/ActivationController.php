@@ -179,7 +179,7 @@ class ActivationController extends Controller
     }
 
     public function showopen(){
-
+        
         //get open activations without logs
         $activations = Activation::orderBy('start')->where('log_received', null)->where('end', '!=', null)->with('callsign', 'activator')->get();
 
@@ -187,13 +187,17 @@ class ActivationController extends Controller
         {
             return redirect()->back()->with('success', 'No activations without logs found.');
         }
+
+        //get appmode
+        $appmode = env('COORDINATORR_MODE', 'SINGLEOP');
         
         //show view
-        return view('activationswithoutlogs', ['activations' => $activations]);        
+        return view('activationswithoutlogs', ['activations' => $activations, 'appmode' => $appmode ]);        
     }
 
     public function receivelog(Activation $activation)
     {
+        
         //check if log was already received
         if($activation->log_received != null)
         {
@@ -201,7 +205,7 @@ class ActivationController extends Controller
         }
 
         //get open activations without logs
-        $activations = Activation::orderBy('start')->where('log_received', null)->where('end', '!=', null)->with('callsign', 'activator')->get();
+        $activations = Activation::orderBy('start')->where('log_received', null)->where('end', '!=', null)->with('callsign', 'activator', 'band')->get();
 
         //set logreceive-date
         $activation->log_received = \Carbon\Carbon::now();
