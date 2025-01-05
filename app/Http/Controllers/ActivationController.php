@@ -115,7 +115,7 @@ class ActivationController extends Controller
         }
 
         //Check if there are planned activations for that callsign and check, if activator is in this
-        $reservations = $callsign->plannedactivations->where('start', '<=', \Carbon\Carbon::now())->where('end', '>=', \Carbon\Carbon::now());
+        $reservations = $callsign->plannedactivations()->where('start', '<=', \Carbon\Carbon::now())->where('end', '>=', \Carbon\Carbon::now());
 
         //add constrictions based on appmode
         $reservations = db4scw_add_mode_constrictions($reservations, $appmode, $bandid, $modeid);
