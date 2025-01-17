@@ -34,7 +34,7 @@ class CallsignController extends Controller
         }
 
         //check if there are planned activations
-        $planned = $callsign->plannedactivations()->orderBy('start', 'desc')->first();
+        $planned = $callsign->plannedactivations()->where('end', '>', \Carbon\Carbon::now())->orderBy('start', 'desc')->first();
 
         //display planned activations
         if($planned != null)
