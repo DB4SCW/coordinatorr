@@ -29,6 +29,8 @@ Route::get('/end_activation/{activation:id}', [ActivationController::class, 'end
 
 //View planned activations
 Route::get('/planned_activations', [PlannedActivationController::class, 'index'])->name('planned_activations');
+Route::get('/planned_activations/calendar', [PlannedActivationController::class, 'showcalendar'])->name('show_calendar_view');
+Route::get('/planned_activations/export', [PlannedActivationController::class, 'export_for_calendar'])->name('show_calendar_view');
 
 //Planned activation handling
 Route::post('/add_planned_activation', [PlannedActivationController::class, 'add'])->name('add_planned_activation');

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use stdClass;
 
 class PlannedActivation extends Model
 {
@@ -31,5 +32,41 @@ class PlannedActivation extends Model
     public function mode() : HasOne
     {
         return $this->hasOne(Mode::class, 'id', 'mode_id');
+    }
+
+    public function getcalendarformat(bool $withcallsign = true)
+    {
+        //get appmode
+        $appmode = env('COORDINATORR_MODE', 'SINGLEOP');
+        
+        //construct format for Fullcalendar plugin
+        $format = new stdClass();
+
+        //construct title
+        $format->title = ( $withcallsign ? ($this->callsign->call . ": ") : '') . $this->activator->call;
+
+        if(($appmode == "MULTIOPBAND" or $appmode == "MULTIOPMODE") and $this->band_id != null)
+        {
+            $format->title = $format->title . " @ " . $this->band->band;
+        }
+
+        if($appmode == "MULTIOPMODE" and $this->mode_id != null)
+        {
+            $format->title = $format->title . " " . $this->mode->mode;
+        }
+
+        //configure date
+        $format->start = $this->start->setTimezone('UTC')->format('Y-m-d\TH:i:s');
+        $format->end = $this->end->setTimezone('UTC')->format('Y-m-d\TH:i:s');
+        
+        //get configured color, if any
+        if($this->callsign->calendar_color != null)
+        {
+            $format->color = $this->callsign->calendar_color;
+        }
+        
+        //return correct format as stdClass
+        return $format;
+    
     }
 }

@@ -90,9 +90,10 @@ class CallsignController extends Controller
         $attributes = $validator->validated();
 
         //create new activator
-        $activator = new Callsign();
-        $activator->call = $attributes['event_callsign'];
-        $activator->save();
+        $callsign = new Callsign();
+        $callsign->call = $attributes['event_callsign'];
+        $callsign->calendar_color = db4scw_get_new_distict_muted_color();
+        $callsign->save();
 
         //return back
         return redirect()->route('adminpanel')->with('success', 'Callsign successfully created.');

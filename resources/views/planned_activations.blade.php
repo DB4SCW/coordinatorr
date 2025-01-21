@@ -66,6 +66,7 @@
         </div>
         @if($planned_activations->count() > 0)
         <h3 class="text-center mb-4" style="margin-top: 30px;">Planned activations (sorted by start date):</h3>
+        <div style="text-align: center"><a href="/planned_activations/calendar"><button class="btn btn-primary">Calendar</button></a></div>
         <div style="margin-bottom: 80px;">
             @foreach($planned_activations as $activation)
             <div class="container mt-5 section" style="background-color: rgba(255, 255, 255, 0.5);">

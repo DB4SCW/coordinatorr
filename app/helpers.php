@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Callsign;
+
 function skd_validatorerrors(\Illuminate\Validation\Validator $validator) : string
 {
     return implode(" | ", $validator->errors()->all());
@@ -67,6 +69,51 @@ function db4scw_assure_appmode_in_env() : void
 
     //close function
     return;
+}
+
+function db4scw_get_new_distict_muted_color() : string 
+{
+    //define some colors
+    $colors = [
+        "#4B4E6D",
+        "#5E6A71",
+        "#7A7265",
+        "#8C8377",
+        "#746A6D",
+        "#595E68",
+        "#6B7A78",
+        "#83786E",
+        "#4F5358",
+        "#6A6164",
+        "#5C6E6F",
+        "#76797A",
+        "#857D72",
+        "#7C6E75",
+        "#50555A",
+        "#697270",
+        "#7A847A",
+        "#645B5D",
+        "#586462",
+        "#73776D"
+    ];
+
+    //shuffle the array
+    shuffle($colors);
+
+    //get existing colors
+    $existing_colors = Callsign::where('calendar_color', '!=', null)->distinct()->select('calendar_color')->get()->pluck('calendar_color')->toArray();
+
+    //get remaining colors
+    $remaining_colors = array_diff($colors, $existing_colors);
+
+    //if we got remaining colors, use the first random one, else use the first random color from the whole list
+    if(count($remaining_colors) > 0)
+    {
+        return $remaining_colors[0];
+    }else
+    {
+        return $colors[0];
+    }
 }
 
 function stalinsort(array $array, bool $reverse = false): array {

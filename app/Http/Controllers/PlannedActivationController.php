@@ -135,4 +135,56 @@ class PlannedActivationController extends Controller
         //redirect back to list
         return redirect()->route('planned_activations')->with('success', 'Activation deleted successfully.');
     }
+
+    public function export_for_calendar()
+    {
+
+        //get request
+        $arguments = request()->all();
+        
+        //get all planned activations
+        $planned_activations = PlannedActivation::orderBy('start')->with('callsign', 'activator');
+
+        //parse request data and narrow down data loading
+        if(array_key_exists('start', $arguments) and array_key_exists('end', $arguments))
+        {
+            $start = \Carbon\Carbon::parse( substr($arguments['start'], 0, 10));
+            $end = \Carbon\Carbon::parse( substr($arguments['end'], 0, 10));
+            $planned_activations = $planned_activations->where('start', '>=', $start);
+            $planned_activations = $planned_activations->where('end', '<=', $end);
+        }
+
+        //get data from database
+        $planned_activations = $planned_activations->get()->where('end', '>', \Carbon\Carbon::now());
+
+        //check if we have more than 1 callsign possible are actual
+        $possiblecalls = Callsign::where('hidden', false)->count();
+
+        //decide if the callsign should be exported as the calendar title
+        $withcallsign = false;
+
+        if($possiblecalls != 1)
+        {
+            $withcallsign = true;
+        }
+
+        //check if there are more than 1 call in the existing planned activations
+        if($planned_activations->pluck('callsign.call')->unique()->count() != 1)
+        {
+            $withcallsign = true;
+        }
+
+        //get calendar format for FullCalendar
+        $calendarData = $planned_activations->map(function ($planned_activation) use($withcallsign) {
+            return $planned_activation->getcalendarformat($withcallsign);
+        });
+
+        //get json data and return 
+        return response()->json(array_values($calendarData->toArray()));
+    }
+
+    public function showcalendar()
+    {
+        return view('calendar', []);
+    }
 }
