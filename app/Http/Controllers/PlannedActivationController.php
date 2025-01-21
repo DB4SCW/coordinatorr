@@ -155,7 +155,7 @@ class PlannedActivationController extends Controller
         }
 
         //get data from database
-        $planned_activations = $planned_activations->get()->where('end', '>', \Carbon\Carbon::now());
+        $planned_activations = $planned_activations->where('end', '>', \Carbon\Carbon::now())->get();
 
         //check if we have more than 1 callsign possible are actual
         $possiblecalls = Callsign::where('hidden', false)->count();
