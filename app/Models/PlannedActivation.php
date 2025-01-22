@@ -34,11 +34,19 @@ class PlannedActivation extends Model
         return $this->hasOne(Mode::class, 'id', 'mode_id');
     }
 
-    public function getcalendarformat(bool $withcallsign = true, string $appmode)
+    public function getcalendarformat(bool $withcallsign = true, string $appmode = "")
     {
        
+        //safety check for appmode
+        if($appmode == "")
+        {
+            $appmode = env('COORDINATORR_MODE', 'SINGLEOP');
+        }
+
         //construct format for Fullcalendar plugin
         $format = new stdClass();
+        $format->id = $this->id;
+        $format->url = "/planned_activations";
 
         //construct title
         $format->title = ( $withcallsign ? ($this->callsign->call . ": ") : '') . $this->activator->call;

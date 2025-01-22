@@ -8,7 +8,7 @@
     <x-slot name="slot">
         <div class="container mt-5">
             <h1>Calendar:</h1>
-            <div style="text-align: center"><a href="/planned_activations"><button class="btn btn-primary">Back</button></a></div>
+            <div style="text-align: center"><a href="/planned_activations"><button class="btn btn-primary">Back to planned activations</button></a></div>
             <div id="calendar"></div>
             <script src='fullcalendar/core/index.global.js'></script>
             <script src='fullcalendar/core/locales-all.global.js'></script>
@@ -18,6 +18,15 @@
                     var calendar = new FullCalendar.Calendar(calendarEl, {
                     initialView: 'timeGridWeek',
                     events: '/planned_activations/export',
+                    eventClick: function(info) {
+                        // don't let the browser navigate
+                        info.jsEvent.preventDefault(); 
+
+                        //open url in new window
+                        if (info.event.url) {
+                            window.open(info.event.url);
+                        }
+                    },
                     lang: 'en',
                     firstDay: 1,
                     height: 'auto',
@@ -26,7 +35,6 @@
                     calendar.render();
                     calendar.setOption('locale', 'de');
                 });
-                
             </script>
         </div>
 
