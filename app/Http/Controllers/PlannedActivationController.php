@@ -139,6 +139,9 @@ class PlannedActivationController extends Controller
     public function export_for_calendar()
     {
 
+        //get appmode
+        $appmode = env('COORDINATORR_MODE', 'SINGLEOP');
+
         //get request
         $arguments = request()->all();
         
@@ -157,7 +160,7 @@ class PlannedActivationController extends Controller
         //get data from database
         $planned_activations = $planned_activations->where('end', '>', \Carbon\Carbon::now())->get();
 
-        //check if we have more than 1 callsign possible are actual
+        //check if we have more than 1 callsign possible
         $possiblecalls = Callsign::where('hidden', false)->count();
 
         //decide if the callsign should be exported as the calendar title
@@ -168,15 +171,15 @@ class PlannedActivationController extends Controller
             $withcallsign = true;
         }
 
-        //check if there are more than 1 call in the existing planned activations
+        //safety-check if there are more than 1 call in the existing planned activations
         if($planned_activations->pluck('callsign.call')->unique()->count() != 1)
         {
             $withcallsign = true;
         }
 
         //get calendar format for FullCalendar
-        $calendarData = $planned_activations->map(function ($planned_activation) use($withcallsign) {
-            return $planned_activation->getcalendarformat($withcallsign);
+        $calendarData = $planned_activations->map(function ($planned_activation) use($withcallsign, $appmode) {
+            return $planned_activation->getcalendarformat($withcallsign, $appmode);
         });
 
         //get json data and return 

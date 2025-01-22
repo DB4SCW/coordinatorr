@@ -34,11 +34,9 @@ class PlannedActivation extends Model
         return $this->hasOne(Mode::class, 'id', 'mode_id');
     }
 
-    public function getcalendarformat(bool $withcallsign = true)
+    public function getcalendarformat(bool $withcallsign = true, string $appmode)
     {
-        //get appmode
-        $appmode = env('COORDINATORR_MODE', 'SINGLEOP');
-        
+       
         //construct format for Fullcalendar plugin
         $format = new stdClass();
 
@@ -59,8 +57,8 @@ class PlannedActivation extends Model
         $format->start = $this->start->setTimezone('UTC')->format('Y-m-d\TH:i:s');
         $format->end = $this->end->setTimezone('UTC')->format('Y-m-d\TH:i:s');
         
-        //get configured color, if any
-        if($this->callsign->calendar_color != null)
+        //get configured color, if we have more than 1 callsign present
+        if($withcallsign and $this->callsign->calendar_color != null)
         {
             $format->color = $this->callsign->calendar_color;
         }
