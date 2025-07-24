@@ -37,7 +37,7 @@ function db4scw_add_mode_constrictions($input, $appmode, $bandid = null, $modeid
     return $input;
 }
 
-function db4scw_assure_appmode_in_env() : void
+function db4scw_assure_appmode() : void
 {
     //get appmode from database
     $current_appmode = Appmode::where('active', true)->first();
