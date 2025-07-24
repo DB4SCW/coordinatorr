@@ -201,6 +201,6 @@ return [
     'db4scw_modal_header_background_color' => env('MODAL_HEADER_BACKGROUND_COLOR', '#333'),
     'db4scw_modal_body_background_color' => env('MODAL_BODY_BACKGROUND_COLOR', '#212529'),
     'db4scw_navbar_link_text_color' => env('NAVBAR_LINK_TEXT_COLOR', 'white'),
-    'db4scw_content_background_color' => env('CONTENT_BACKGROUND_COLOR', 'rgb(155, 255, 185)'),
+    'db4scw_content_background_color' => env('CONTENT_BACKGROUND_COLOR', 'rgba(255, 255, 255, 0.5);'),
 
 ];

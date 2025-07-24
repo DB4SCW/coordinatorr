@@ -59,7 +59,7 @@
         <h3 class="text-center mb-4" style="margin-top: 30px;">Current activations:</h3>
         <div style="margin-bottom: 80px;">
             @foreach($current_activations as $activation)
-            <div class="container mt-5 section" style="background-color: rgba(255, 255, 255, 0.5);">
+            <div class="container mt-5 section">
                 <table class="table table-bordered table-hover table-dark" style="margin-bottom: 5px;">
                     <thead class="thead-light">
                         <tr>

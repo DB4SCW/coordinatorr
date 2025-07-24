@@ -69,7 +69,7 @@
         <div style="text-align: center"><a href="/planned_activations/calendar"><button class="btn btn-primary">Calendar</button></a></div>
         <div style="margin-bottom: 80px;">
             @foreach($planned_activations as $activation)
-            <div class="container mt-5 section" style="background-color: rgba(255, 255, 255, 0.5);">
+            <div class="container mt-5 section">
                 <table class="table table-bordered table-hover table-dark" style="margin-bottom: 5px;">
                     <thead class="thead-light">
                         <tr>
