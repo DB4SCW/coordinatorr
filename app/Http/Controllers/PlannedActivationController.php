@@ -17,7 +17,7 @@ class PlannedActivationController extends Controller
         //get infos from database
         $callsigns = Callsign::where('hidden', false)->get();
         $planned_activations = PlannedActivation::orderBy('start')->with('callsign', 'activator')->get()->where('end', '>', \Carbon\Carbon::now());
-        $appmode = env('COORDINATORR_MODE', 'SINGLEOP');
+        $appmode = config('app.db4scw_coordinatorr_mode');
         $bands = Band::all();
         $modes = Mode::all();
 
@@ -28,7 +28,7 @@ class PlannedActivationController extends Controller
     public function add()
     {
         //get appmode
-        $appmode = env('COORDINATORR_MODE', 'SINGLEOP');
+        $appmode = config('app.db4scw_coordinatorr_mode');
 
         //check if Appmode is valid
         if(Appmode::where('option', $appmode)->count() < 1) {
@@ -140,7 +140,7 @@ class PlannedActivationController extends Controller
     {
 
         //get appmode
-        $appmode = env('COORDINATORR_MODE', 'SINGLEOP');
+        $appmode = config('app.db4scw_coordinatorr_mode');
 
         //get request
         $arguments = request()->all();

@@ -40,7 +40,7 @@ Route::get('/planned_activation/{plannedactivation:id}/delete', [PlannedActivati
 Route::get('/status/{callsign:call}', [CallsignController::class, 'status'])->name('getstatus');
 
 //Login Route with token
-Route::get('/adminkey/' . urlencode(env('ADMIN_PANEL_SECRET', 'simsalabim')), [LoginController::class, 'login'])->name('loginwithtoken');
+Route::get('/adminkey/' . urlencode(config('app.db4scw_adminpanel_secret')), [LoginController::class, 'login'])->name('loginwithtoken');
 
 //dummy login route to redirect to home (necessary because of auth middleware)
 Route::get('/login', function() { return redirect('/'); })->name('login');

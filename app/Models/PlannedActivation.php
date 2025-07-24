@@ -40,7 +40,7 @@ class PlannedActivation extends Model
         //safety check for appmode
         if($appmode == "")
         {
-            $appmode = env('COORDINATORR_MODE', 'SINGLEOP');
+            $appmode = config('app.db4scw_coordinatorr_mode');
         }
 
         //construct format for Fullcalendar plugin

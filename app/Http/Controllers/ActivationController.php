@@ -17,7 +17,7 @@ class ActivationController extends Controller
         //get infos from database
         $callsigns = Callsign::where('hidden', false)->get();
         $current_activations = Activation::where('end', null)->with('callsign', 'activator')->get();
-        $appmode = env('COORDINATORR_MODE', 'SINGLEOP');
+        $appmode = config('app.db4scw_coordinatorr_mode');
         $bands = Band::all();
         $modes = Mode::all();
 
@@ -29,7 +29,7 @@ class ActivationController extends Controller
     public function add()
     {
         //get appmode
-        $appmode = env('COORDINATORR_MODE', 'SINGLEOP');
+        $appmode = config('app.db4scw_coordinatorr_mode');
 
         //check if Appmode is valid
         if(Appmode::where('option', $appmode)->count() < 1) {
@@ -144,7 +144,7 @@ class ActivationController extends Controller
         $future_reservations = db4scw_add_mode_constrictions($future_reservations, $appmode, $bandid, $modeid);
 
         //check if there are other activations up to 4 hours in the future where this activator is not the reserving activator
-        $future_reservations->get()->where('start', '<=', \Carbon\Carbon::now()->addHours(env("COORDINATORR_CHECK_RESERVATIONS_IN_ADVANCE_HOURS", 4)));
+        $future_reservations->get()->where('start', '<=', \Carbon\Carbon::now()->addHours(config('app.db4scw_check_reservations_advance_hours')));
 
         //decide which on-screen-message to display
         if($future_reservations->count() > 0)
@@ -189,7 +189,7 @@ class ActivationController extends Controller
         }
 
         //get appmode
-        $appmode = env('COORDINATORR_MODE', 'SINGLEOP');
+        $appmode = config('app.db4scw_coordinatorr_mode');
         
         //show view
         return view('activationswithoutlogs', ['activations' => $activations, 'appmode' => $appmode ]);        

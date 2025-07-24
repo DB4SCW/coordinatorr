@@ -161,8 +161,8 @@
 
         <!-- Floating Footer -->
         <div class="footer">
-            <a class="footerelement" href="{{ env('APP_IMPRESSUM_URL') }}">Impressum</a>
-            <a class="footerelement" href="{{ env('APP_DATA_PROTECTION_URL') }}">Datenschutz / Data protection declaration</a>
+            <a class="footerelement" href="{{ config('app.db4scw_impressum_url') }}">Impressum</a>
+            <a class="footerelement" href="{{ config('app.db4scw_data_protection_url') }}">Datenschutz / Data protection declaration</a>
         </div>
 
         <!-- On demand JS -->

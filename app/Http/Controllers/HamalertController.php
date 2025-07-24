@@ -13,7 +13,7 @@ class HamalertController extends Controller
     public function receive()
     {
         //get appmode
-        $appmode = env('COORDINATORR_MODE', 'SINGLEOP');
+        $appmode = config('app.db4scw_coordinatorr_mode');
 
         //check if Appmode is valid
         if(Appmode::where('option', $appmode)->count() < 1) {
