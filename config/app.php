@@ -195,11 +195,12 @@ return [
     */
 
     'db4scw_page_background_color' => env('PAGE_BACKGROUND_COLOR', '#343a40'),
-    'db4scw_accent_background_color' => env('PAGE_ACCENT_COLOR', 'rgb(59, 109, 74)'),
+    'db4scw_accent_background_color' => env('PAGE_ACCENT_COLOR', 'rgb(226, 126, 0)'),
     'db4scw_table_background_color' => env('TABLE_ACCENT_COLOR', '#555e66'),
     'db4scw_body_text_color' => env('BODY_TEXT_COLOR', '#f8f9fa'),
     'db4scw_modal_header_background_color' => env('MODAL_HEADER_BACKGROUND_COLOR', '#333'),
     'db4scw_modal_body_background_color' => env('MODAL_BODY_BACKGROUND_COLOR', '#212529'),
-    'db4scw_navbar_link_text_color' => env('NAVBAR_LINK_TEXT_COLOR', 'rgba(255, 255, 255, 0.5)'),
+    'db4scw_navbar_link_text_color' => env('NAVBAR_LINK_TEXT_COLOR', 'white'),
+    'db4scw_content_background_color' => env('CONTENT_BACKGROUND_COLOR', 'rgb(155, 255, 185)'),
 
 ];

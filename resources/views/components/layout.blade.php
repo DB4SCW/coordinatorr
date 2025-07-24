@@ -21,8 +21,8 @@
         <style>
             /* Custom CSS for dark mode */
             body {
-                background-color: #343a40;
-                color: #f8f9fa;
+                background-color: {{ config('app.db4scw_page_background_color') }};
+                color: {{ config('app.db4scw_body_text_color') }};
             }
             .container {
                 max-width: 1080px;
@@ -31,38 +31,39 @@
                 max-width: 2000px;
             }
             .table {
-                background-color: #555e66; 
+                background-color: {{ config('app.db4scw_table_background_color') }}; 
             }
             .btn-primary {
-                background-color: rgb(226, 126, 0); /* #007bff vorher */
-                border-color:rgb(226, 126, 0);
+                background-color: {{ config('app.db4scw_accent_background_color') }};
+                border-color: {{ config('app.db4scw_accent_background_color') }};
+                color: {{ config('app.db4scw_body_text_color') }};
             }
             .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
-                color: #fff;
-                background-color: rgb(226, 126, 0);
-                border-color:rgb(226, 126, 0);
+                color: {{ config('app.db4scw_body_text_color') }};
+                background-color: {{ config('app.db4scw_accent_background_color') }};
+                border-color: {{ config('app.db4scw_accent_background_color') }};
             }
             .modal-content {
-                background-color: #333;
-                color: #fff;
+                background-color: {{ config('app.db4scw_modal_body_background_color') }};
+                color: {{ config('app.db4scw_body_text_color') }};
             }
             .modal-header {
-                background-color: #212529;
-                color: #fff;
+                background-color: {{ config('app.db4scw_modal_header_background_color') }};
+                color: {{ config('app.db4scw_body_text_color') }};
             }
             .modal-footer {
-                background-color: #212529;
-                color: #fff;
+                background-color: {{ config('app.db4scw_modal_body_background_color') }};
+                color: {{ config('app.db4scw_body_text_color') }};
             }
             .custom-navbar {
-                background-color: rgb(226, 126, 0);
+                background-color: {{ config('app.db4scw_accent_background_color') }};
             }
             .navbar-element {
                 display: flex; 
                 justify-content: flex-end;
             }
             .navbar-link {
-                color: white;
+                color: {{ config('app.db4scw_navbar_link_text_color') }};
             }
             .bottom-right-alert {
                 position: fixed;
@@ -81,7 +82,7 @@
                 left: 0;
                 bottom: 0;
                 width: 100%;
-                background-color: rgb(226, 126, 0);
+                background-color: {{ config('app.db4scw_accent_background_color') }};
                 padding: 10px;
                 text-align: center;
                 display: flex; 
@@ -95,7 +96,7 @@
                 margin-top: 20px;
                 margin-bottom: 20px;
                 padding: 20px;
-                background-color: rgb(155, 255, 185);
+                background-color: {{ config('app.db4scw_content_background_color') }};
                 border-radius: 10px;
             }
         </style>
@@ -105,7 +106,7 @@
     <body>
          <!-- Floating Navbar -->
         <nav class="navbar fixed-top navbar-dark custom-navbar"  style="display: flex;">
-            <a class="navbar-brand" href="/">Coordinatorr</a>
+            <a class="navbar-brand" href="/" style="color: {{ config('app.db4scw_body_text_color') }};">Coordinatorr</a>
             
             <div class="navbar-element">
                 @if(auth()->check())
