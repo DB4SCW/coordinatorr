@@ -40,7 +40,7 @@ class PlannedActivation extends Model
         //safety check for appmode
         if($appmode == "")
         {
-            $appmode = config('app.db4scw_coordinatorr_mode');
+            $appmode = db4scw_get_current_appmode();
         }
 
         //construct format for Fullcalendar plugin

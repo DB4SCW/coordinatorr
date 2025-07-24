@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Appmode;
 use App\Models\Callsign;
 
 function skd_validatorerrors(\Illuminate\Validation\Validator $validator) : string
@@ -38,37 +39,26 @@ function db4scw_add_mode_constrictions($input, $appmode, $bandid = null, $modeid
 
 function db4scw_assure_appmode_in_env() : void
 {
-    //define env key
-    $key = "COORDINATORR_MODE";
-    $value = "SINGLEOP";
-
-    //get environment file
-    $envFile = app()->environmentFilePath();
-    $envcontent = file_get_contents($envFile);
-
-    //check if key exists
-    $keyPosition = strpos($envcontent, "{$key}=");
-
-    // If key exists, replace it. Otherwise, add the new key-value pair.
-    if ($keyPosition !== false) 
+    //get appmode from database
+    $current_appmode = Appmode::where('active', true)->first();
+    
+    //if no appmode is set in database, set the default mode.
+    if($current_appmode == null)
     {
-        //do nothing
-        return;
-    } else {
-        $envcontent .= "\n{$key}={$value}";
+        $default_appmode = Appmode::where('option', 'SINGLEOP')->first();
+        $default_appmode->active = true;
+        $default_appmode->save();
+        $current_appmode = $default_appmode;
     }
+}
 
-    //write new env file
-    try 
-    {
-        file_put_contents($envFile, $envcontent);
-    } catch (\Throwable $th) 
-    {
-        //nothing we can do here if that does not work...
-    }
+function db4scw_get_current_appmode()
+{
+    //get appmode from database
+    $current_appmode = Appmode::where('active', true)->first();
 
-    //close function
-    return;
+    //return the option
+    return $current_appmode->option;
 }
 
 function db4scw_get_new_distict_muted_color() : string 

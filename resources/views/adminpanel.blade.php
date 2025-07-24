@@ -35,7 +35,7 @@
                         <label for="mode" style="color:red;">DANGER: Changing this will delete all current activations and upcoming planned activations!</label>
                         <select class="form-control" name="mode">
                             @foreach ($modes as $mode)
-                            <option value="{{ $mode->option }}" {{ config('app.db4scw_coordinatorr_mode') == $mode->option ? 'selected' : '' }}>{{ $mode->option }} -> {{ $mode->description }}</option>    
+                            <option value="{{ $mode->option }}" {{ $current_appmode == $mode->option ? 'selected' : '' }}>{{ $mode->option }} -> {{ $mode->description }}</option>    
                             @endforeach
                         </select>
                     </div>

@@ -18,8 +18,9 @@ class AdminpanelController extends Controller
         $activators = Activator::orderBy('call', 'ASC')->get();
         $eventcalls = Callsign::orderBy('call', 'ASC')->get();
         $modes = Appmode::all();
+        $current_appmode = Appmode::where('active', true)->first()->option;
 
-        return view('adminpanel', ['activators' => $activators, 'eventcalls' => $eventcalls, 'modes' => $modes ]);
+        return view('adminpanel', ['activators' => $activators, 'eventcalls' => $eventcalls, 'modes' => $modes,  'current_appmode' => $current_appmode]);
     }
 
     public function switchmode()
@@ -41,30 +42,22 @@ class AdminpanelController extends Controller
         $attributes = $validator->validated();
         $value = $attributes['mode'];
 
-        //define env key
-        $key = "COORDINATORR_MODE";
+        //get past and future appmode
+        $current_appmode = Appmode::where('active', true)->first();
+        $future_appmode = Appmode::where('option', $value)->first();
 
-        //get environment file
-        $envFile = app()->environmentFilePath();
-        $envcontent = file_get_contents($envFile);
-
-        //check if key exists
-        $keyPosition = strpos($envcontent, "{$key}=");
-
-        // If key exists, replace it. Otherwise, add the new key-value pair.
-        if ($keyPosition !== false) {
-            $oldline = $key . "=" . env($key);
-            $envcontent = str_replace($oldline, "{$key}={$value}", $envcontent);
-        } else {
-            $envcontent .= "\n{$key}={$value}";
+        //return early if no change is necessary
+        if($current_appmode->id == $future_appmode->id)
+        {
+            //redirect back to adminpanel
+            return redirect()->route('adminpanel')->with('success', 'No change in coordinatorr mode necessary.');
         }
 
-        //write new env file
-        try {
-            file_put_contents($envFile, $envcontent);
-        } catch (\Throwable $th) {
-            return redirect()->route('adminpanel')->with('danger', 'Failed to change coordinatorr mode.');
-        }
+        //switch appmodes
+        $current_appmode->active = false;
+        $current_appmode->save();
+        $future_appmode->active = true;
+        $future_appmode->save();
 
         //purge all current activations
         $current_activations = Activation::where('end', null)->get();

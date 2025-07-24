@@ -17,7 +17,7 @@ class ActivationController extends Controller
         //get infos from database
         $callsigns = Callsign::where('hidden', false)->get();
         $current_activations = Activation::where('end', null)->with('callsign', 'activator')->get();
-        $appmode = config('app.db4scw_coordinatorr_mode');
+        $appmode = db4scw_get_current_appmode();
         $bands = Band::all();
         $modes = Mode::all();
 
@@ -29,7 +29,7 @@ class ActivationController extends Controller
     public function add()
     {
         //get appmode
-        $appmode = config('app.db4scw_coordinatorr_mode');
+        $appmode = db4scw_get_current_appmode();
 
         //check if Appmode is valid
         if(Appmode::where('option', $appmode)->count() < 1) {
@@ -189,7 +189,7 @@ class ActivationController extends Controller
         }
 
         //get appmode
-        $appmode = config('app.db4scw_coordinatorr_mode');
+        $appmode = db4scw_get_current_appmode();
         
         //show view
         return view('activationswithoutlogs', ['activations' => $activations, 'appmode' => $appmode ]);        
