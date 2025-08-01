@@ -74,7 +74,7 @@ class ActivationController extends Controller
 
         //handle fail of validation
         if ($validator->fails()) {
-            return redirect()->route('home')->with('danger', skd_validatorerrors($validator));
+            return redirect()->route('home')->with('danger', db4scw_validatorerrors($validator));
         }
 
         //validierte Felder abholen
@@ -176,6 +176,31 @@ class ActivationController extends Controller
         //redirect back to list
         return redirect()->route('home')->with('success', 'Activation ended successfully.');
 
+    }
+
+    public function endmodal() 
+    {
+        //validate input
+        $validator = \Illuminate\Support\Facades\Validator::make(request()->all(), [
+            'activationId' => 'required|exists:activations,id'
+        ], 
+        [
+            'activationId.exists' => 'This activation does not exist.'
+        ]);
+
+        //handle fail of validation
+        if ($validator->fails()) {
+            return redirect()->back()->with('danger', db4scw_validatorerrors($validator))->withInput();
+        }
+
+        //get validated fields
+        $attributes = $validator->validated();
+
+        //find activation
+        $activation = Activation::find($attributes['activationId']);
+
+        //call get route
+        return $this->end($activation);
     }
 
     public function showopen(){

@@ -83,7 +83,7 @@ class CallsignController extends Controller
 
         //handle fail of validation
         if ($validator->fails()) {
-            return redirect()->route('adminpanel')->with('danger', skd_validatorerrors($validator))->withInput();
+            return redirect()->route('adminpanel')->with('danger', db4scw_validatorerrors($validator))->withInput();
         }
 
         //get validated fields

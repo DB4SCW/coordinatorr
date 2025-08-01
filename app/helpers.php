@@ -3,7 +3,7 @@
 use App\Models\Appmode;
 use App\Models\Callsign;
 
-function skd_validatorerrors(\Illuminate\Validation\Validator $validator) : string
+function db4scw_validatorerrors(\Illuminate\Validation\Validator $validator) : string
 {
     return implode(" | ", $validator->errors()->all());
 }

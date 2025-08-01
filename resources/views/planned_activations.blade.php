@@ -100,7 +100,11 @@
                 </table>
                 
                 <div style="text-align:right;">
+                    @if(config('app.db4scw_end_functions_javascript'))
+                    <button class="btn btn-danger" onclick="showConfirmDeleteActivationModal({{ $activation->id }})">Delete Planned Activation</button>
+                    @else
                     <a href="/planned_activation/{{ $activation->id }}/delete" style="text-align: right;"><button class="btn btn-danger">Delete Planned Activation</button></a>
+                    @endif
                 </div>
                 
             </div>
@@ -111,6 +115,46 @@
         <!-- Dummy Diff als Abstandshalter für Mobile Landscape -->
         </div>
         @endif
+
+        <!-- Modal dialog to confirm ending of activation -->
+        <div class="modal fade" id="confirmDeletionofActivationModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeletionofActivationModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dark" role="document">
+              <div class="modal-content">
+                <div class="modal-header modal-dark">
+                  <h5 class="modal-title" id="confirmDeletionofActivationModalLabel">Confirm Deletion of Planned Activation?</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body" id="message">
+                  Are you sure you want to delete this planned activation?
+                </div>
+                <div class="modal-footer">
+                  <form id="confirmDeletionofActivationForm" method="post" action="/planned_activation/delete">
+                    @csrf
+                    
+                    <input type="hidden" id="activationIdmodal" name="plannedactivationId" value="">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">End Activation</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>
+    </x-slot>
+
+    <x-slot name="scripts">
+        <script>
+            let activationidtodelete; // Variable to store the activation ID to be deleted
+        
+            // Function to show the confirmation modal dialog
+            function showConfirmDeleteActivationModal(activationId) {
+                activationidtodelete = activationId; // Store the upload ID in the variable
+                $('#activationIdmodal').val(activationId); //set id to hidden input field
+                document.getElementById('message').innerHTML = "".concat('re you sure you want to delete this planned activation?');
+                $('#confirmDeletionofActivationModal').modal('show'); // Show the modal
+            }
+        </script>
     </x-slot>
 
 </x-layout>

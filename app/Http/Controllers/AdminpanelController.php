@@ -35,7 +35,7 @@ class AdminpanelController extends Controller
 
         //handle failure of validation
         if ($validator->fails()) {
-            return redirect()->route('adminpanel')->with('danger', skd_validatorerrors($validator));
+            return redirect()->route('adminpanel')->with('danger', db4scw_validatorerrors($validator));
         }
 
         //get validated fields

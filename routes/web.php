@@ -26,6 +26,7 @@ Route::get('/', [ActivationController::class, 'index'])->name('home');
 //Activation handling
 Route::post('/add_activation', [ActivationController::class, 'add'])->name('add');
 Route::get('/end_activation/{activation:id}', [ActivationController::class, 'end'])->name('end');
+Route::post('/end_activation', [ActivationController::class, 'endmodal'])->name('endmodal');
 
 //View planned activations
 Route::get('/planned_activations', [PlannedActivationController::class, 'index'])->name('planned_activations');
@@ -35,6 +36,7 @@ Route::get('/planned_activations/export', [PlannedActivationController::class, '
 //Planned activation handling
 Route::post('/add_planned_activation', [PlannedActivationController::class, 'add'])->name('add_planned_activation');
 Route::get('/planned_activation/{plannedactivation:id}/delete', [PlannedActivationController::class, 'remove'])->name('delete_planned_activation');
+Route::post('/planned_activation/delete', [PlannedActivationController::class, 'removemodal'])->name('delete_planned_activation_modal');
 
 //QRZ IFrame Integration
 Route::get('/status/{callsign:call}', [CallsignController::class, 'status'])->name('getstatus');

@@ -80,7 +80,7 @@ class PlannedActivationController extends Controller
 
         //handle fail of validation
         if ($validator->fails()) {
-            return redirect()->route('planned_activations')->with('danger', skd_validatorerrors($validator))->withInput();
+            return redirect()->route('planned_activations')->with('danger', db4scw_validatorerrors($validator))->withInput();
         }
 
         //get validated fields
@@ -134,6 +134,31 @@ class PlannedActivationController extends Controller
         
         //redirect back to list
         return redirect()->route('planned_activations')->with('success', 'Activation deleted successfully.');
+    }
+
+    public function removemodal()
+    {
+        //validate input
+        $validator = \Illuminate\Support\Facades\Validator::make(request()->all(), [
+            'plannedactivationId' => 'required|exists:planned_activations,id'
+        ], 
+        [
+            'plannedactivationId.exists' => 'This planned activation does not exist.'
+        ]);
+
+        //handle fail of validation
+        if ($validator->fails()) {
+            return redirect()->back()->with('danger', db4scw_validatorerrors($validator))->withInput();
+        }
+
+        //get validated fields
+        $attributes = $validator->validated();
+
+        //find activation
+        $plannedactivation = PlannedActivation::find($attributes['plannedactivationId']);
+
+        //call get route
+        return $this->remove($plannedactivation);
     }
 
     public function export_for_calendar()
