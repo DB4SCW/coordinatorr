@@ -151,7 +151,7 @@
             function showConfirmDeleteActivationModal(activationId) {
                 activationidtodelete = activationId; // Store the upload ID in the variable
                 $('#activationIdmodal').val(activationId); //set id to hidden input field
-                document.getElementById('message').innerHTML = "".concat('re you sure you want to delete this planned activation?');
+                document.getElementById('message').innerHTML = "".concat('Are you sure you want to delete this planned activation?');
                 $('#confirmDeletionofActivationModal').modal('show'); // Show the modal
             }
         </script>
