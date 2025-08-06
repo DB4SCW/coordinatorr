@@ -14,7 +14,7 @@ Read about how this project came to be on my [Blog](https://www.db4scw.de/introd
 
 If you discover a security vulnerability within Laravel itself, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). 
 
-If you discover a security vulnerability within Coordinatorr, please send an e-mail to DB4SCW, Stefan Wolf via [db4scw@darc.de](mailto:db4scw@darc.de). 
+If you discover a security vulnerability within Coordinatorr, please send an e-mail to DB4SCW, Stefan Wolf via [dev@db4scw.de](mailto:dev@db4scw.de). 
 
 All security vulnerabilities will be promptly addressed.
 
