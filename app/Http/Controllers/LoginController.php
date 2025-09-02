@@ -26,6 +26,9 @@ class LoginController extends Controller
         //regenerate session
         session()->regenerate();
 
+        //assure there is an app-mode set in the database
+        db4scw_assure_appmode();
+
         //get locally installed version
         $versioninfo_path = storage_path('app/version.txt');
         $installed_version = File::get($versioninfo_path);
@@ -33,23 +36,16 @@ class LoginController extends Controller
         
         //get globally available version
         $available_version = $installed_version;
-        try {
-            $available_version = Http::get('https://hamawardz.de/versionfiles/coordinatorr_version.txt')->body();
-            $available_version = preg_replace('/\s+/', ' ', trim($available_version));
-        } catch (\Throwable $th) {
-            // do nothing, cannot reach info for updated version
-        }
 
-        //assure there is an app-mode set in the database
-        db4scw_assure_appmode();
+        //get newest release from Github
+        $githubinfos =  db4scw_checklatestGithubRelease("DB4SCW", "coordinatorr", $installed_version);
 
         //check if upgrade is needed and set updateinfo for display on GUI
-        if(version_compare($available_version, $installed_version, '>'))
+        if($githubinfos["isNewer"])
         {
             //redirect to admin panel
-            return redirect('/admin')->with('success', 'Successfull login to admin panel')->with('updateinfo', $available_version);
-        }else
-        {
+            return redirect('/admin')->with('success', 'Successfull login to admin panel')->with('updateinfo', $githubinfos);
+        }else{
             //redirect to admin panel
             return redirect('/admin')->with('success', 'Successfull login to admin panel');
         }
