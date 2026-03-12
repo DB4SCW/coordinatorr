@@ -144,7 +144,7 @@ class ActivationController extends Controller
         $future_reservations = db4scw_add_mode_constrictions($future_reservations, $appmode, $bandid, $modeid);
 
         //check if there are other activations up to 4 hours in the future where this activator is not the reserving activator
-        $future_reservations->get()->where('start', '<=', \Carbon\Carbon::now()->addHours(config('app.db4scw_check_reservations_advance_hours')));
+        $future_reservations->get()->where('start', '<=', \Carbon\Carbon::now()->addHours((int)config('app.db4scw_check_reservations_advance_hours')));
 
         //decide which on-screen-message to display
         if($future_reservations->count() > 0)
