@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('band', 10)->unique()->index();
-            $table->unsignedDecimal('start', 10,4)->index();
-            $table->unsignedDecimal('end', 10, 4)->index();
+            $table->decimal('start', 10,4)->index();
+            $table->decimal('end', 10, 4)->index();
         });
 
         //Fill band data
