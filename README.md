@@ -33,3 +33,37 @@ Special thanks to our contributors, who have helped to improve this software:
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Example Docker Compose Setup
+
+```yaml
+services:
+  coordinatorr:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: coordinatorr
+    ports:
+      - "8080:80"
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_URL: http://localhost:8080
+      DB_CONNECTION: sqlite
+      DB_DATABASE: database.sqlite
+      CACHE_DRIVER: file
+      QUEUE_CONNECTION: sync
+      SESSION_DRIVER: database
+      ADMIN_PANEL_SECRET: changeme
+    # use this if you want to use a .env file instead of the environment variables above
+    # env_file:
+    #   - .env
+    volumes:
+      - coordinatorr_storage:/var/www/html/storage
+      - coordinatorr_database:/var/www/html/database
+    restart: unless-stopped
+
+volumes:
+  coordinatorr_storage:
+  coordinatorr_database:
+```
